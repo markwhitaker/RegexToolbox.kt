@@ -3,7 +3,7 @@ package uk.co.mainwave.regextoolboxkotlin
 /**
  * Quantifiers that can be applied to regex elements or groups
  */
-open class RegexQuantifier internal constructor(
+open class RegexQuantifier protected constructor(
     private var regexString: String
 ) {
     protected fun makeNonGreedy(): RegexQuantifier {

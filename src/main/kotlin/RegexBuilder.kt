@@ -32,11 +32,7 @@ class RegexBuilder {
             0 -> {
                 val regex = Regex(
                     stringBuilder.toString(),
-                    options
-                        .map {
-                            it.kotlinRegexOption
-                        }
-                        .toSet()
+                    options.map { it.kotlinRegexOption }.toSet()
                 )
                 stringBuilder.setLength(0)
                 regex
