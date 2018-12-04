@@ -12,7 +12,7 @@ Regular expression tools for Kotlin developers.
  - Code is safer and far less prone to regular expression syntax errors and programmer errors.
 
 ---
-![icon](https://raw.githubusercontent.com/markwhitaker/RegexToolbox.Java/master/Artwork/RegexToolbox-icon-32.png) **Java developer?** Check out the Java version of this library, [RegexToolbox.Java](https://github.com/markwhitaker/RegexToolbox.Java).
+![icon](https://raw.githubusercontent.com/markwhitaker/RegexToolbox.Java/master/artwork/RegexToolbox-icon-32.png) **Java developer?** Check out the Java version of this library, [RegexToolbox.Java](https://github.com/markwhitaker/RegexToolbox.Java).
 
 ![icon](https://raw.githubusercontent.com/markwhitaker/RegexToolbox.CSharp/master/Artwork/RegexToolbox-icon-32.png) **.NET developer?** Check out the C# version of this library, [RegexToolbox.CSharp](https://github.com/markwhitaker/RegexToolbox.CSharp).
 
