@@ -305,9 +305,9 @@ class RegexBuilder {
      * it can have quantifiers applied to it, and they capture the results of each group match and
      * allow you to access them afterwards using Match.Groups.
      *
-     * If you don't want to capture the group match, use [.startNonCapturingGroup].
+     * If you don't want to capture the group match, use [startNonCapturingGroup].
      *
-     * Note: all groups must be ended with [.endGroup] before calling [.buildRegex].
+     * Note: all groups must be ended with [endGroup] before calling [buildRegex].
      *
      * @return The current [RegexBuilder] object, for method chaining
      */
@@ -321,9 +321,9 @@ class RegexBuilder {
      * it can have quantifiers applied to it, but do not capture the results of each group match, meaning
      * you can't access them afterwards using Match.Groups.
      *
-     * If you want to capture group results, use [.startGroup] or [.startNamedGroup].
+     * If you want to capture group results, use [startGroup] or [startNamedGroup].
      *
-     * Note: all groups must be ended with [.endGroup] before calling [.buildRegex].
+     * Note: all groups must be ended with [endGroup] before calling [buildRegex].
      *
      * @return The current [RegexBuilder] object, for method chaining
      */
@@ -338,9 +338,9 @@ class RegexBuilder {
      * allow you to access them afterwards using Match.Groups. Named capture groups can be accessed by
      * indexing into Match.Groups with the assigned name as well as a numerical index.
      *
-     * If you don't want to capture the group match, use [.startNonCapturingGroup].
+     * If you don't want to capture the group match, use [startNonCapturingGroup].
      *
-     * Note: all groups must be ended with [.endGroup] before calling [.buildRegex].
+     * Note: all groups must be ended with [endGroup] before calling [buildRegex].
      *
      * @param name Name used to identify the group
      * @return The current [RegexBuilder] object, for method chaining
