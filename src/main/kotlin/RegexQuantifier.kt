@@ -43,9 +43,7 @@ open class RegexQuantifier internal constructor(
          * @param times The exact number of occurrences to match
          * @return A non-greedy quantifier
          */
-        fun exactly(times: Int): RegexQuantifier {
-            return RegexQuantifier("{$times}")
-        }
+        fun exactly(times: Int) = RegexQuantifier("{$times}")
 
         /**
          * Quantifier to match at least a minimum number of occurrences of the preceding element
@@ -53,9 +51,7 @@ open class RegexQuantifier internal constructor(
          * @param minimum The minimum number of occurrences to match
          * @return A greedy quantifier: use [RegexGreedyQuantifier.butAsFewAsPossible] to make it non-greedy
          */
-        fun atLeast(minimum: Int): RegexGreedyQuantifier {
-            return RegexGreedyQuantifier("{$minimum,}")
-        }
+        fun atLeast(minimum: Int) = RegexGreedyQuantifier("{$minimum,}")
 
         /**
          * Quantifier to match no more than a maximum number of occurrences of the preceding element
@@ -63,9 +59,7 @@ open class RegexQuantifier internal constructor(
          * @param maximum The maximum number of occurrences to match
          * @return A greedy quantifier: use [RegexGreedyQuantifier.butAsFewAsPossible] to make it non-greedy
          */
-        fun noMoreThan(maximum: Int): RegexGreedyQuantifier {
-            return RegexGreedyQuantifier("{0,$maximum}")
-        }
+        fun noMoreThan(maximum: Int) = RegexGreedyQuantifier("{0,$maximum}")
 
         /**
          * Quantifier to match at least a minimum, and no more than a maximum, occurrences of the preceding element
@@ -74,8 +68,6 @@ open class RegexQuantifier internal constructor(
          * @param maximum The maximum number of occurrences to match
          * @return A greedy quantifier: use [RegexGreedyQuantifier.butAsFewAsPossible] to make it non-greedy
          */
-        fun between(minimum: Int, maximum: Int): RegexGreedyQuantifier {
-            return RegexGreedyQuantifier("{$minimum,$maximum}")
-        }
+        fun between(minimum: Int, maximum: Int) = RegexGreedyQuantifier("{$minimum,$maximum}")
     }
 }

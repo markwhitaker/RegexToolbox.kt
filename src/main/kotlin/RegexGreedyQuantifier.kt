@@ -13,7 +13,5 @@ class RegexGreedyQuantifier internal constructor(
      *
      * @return A non-greedy [RegexQuantifier]
      */
-    fun butAsFewAsPossible(): RegexQuantifier {
-        return makeNonGreedy()
-    }
+    fun butAsFewAsPossible(): RegexQuantifier = makeNonGreedy()
 }

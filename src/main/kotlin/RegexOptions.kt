@@ -4,7 +4,7 @@ package uk.co.mainwave.regextoolboxkotlin
  * Options that can be passed to [RegexBuilder.buildRegex].
  */
 enum class RegexOptions(
-    val kotlinRegexOption: RegexOption
+    internal val kotlinRegexOption: RegexOption
 ) {
     /**
      * Make the regex case-insensitive
