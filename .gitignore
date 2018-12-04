@@ -45,6 +45,9 @@ cmake-build-*/
 # File-based project format
 *.iws
 
+# Gradle build
+build/
+
 # IntelliJ
 out/
 
