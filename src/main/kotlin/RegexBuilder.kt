@@ -303,7 +303,7 @@ class RegexBuilder {
     /**
      * Start a capture group. Capture groups have two purposes: they group part of the expression so
      * it can have quantifiers applied to it, and they capture the results of each group match and
-     * allow you to access them afterwards using Match.Groups.
+     * allow you to access them afterwards using [MatchResult.groups].
      *
      * If you don't want to capture the group match, use [startNonCapturingGroup].
      *
@@ -319,7 +319,7 @@ class RegexBuilder {
     /**
      * Start a non-capturing group. Non-capturing groups group part of the expression so
      * it can have quantifiers applied to it, but do not capture the results of each group match, meaning
-     * you can't access them afterwards using Match.Groups.
+     * you can't access them afterwards using [MatchResult.groups].
      *
      * If you want to capture group results, use [startGroup] or [startNamedGroup].
      *
@@ -335,8 +335,8 @@ class RegexBuilder {
     /**
      * Start a named capture group. Capture groups have two purposes: they group part of the expression so
      * it can have quantifiers applied to it, and they capture the results of each group match and
-     * allow you to access them afterwards using Match.Groups. Named capture groups can be accessed by
-     * indexing into Match.Groups with the assigned name as well as a numerical index.
+     * allow you to access them afterwards using [MatchResult.groups]. Named capture groups can be accessed by
+     * indexing into [MatchResult.groups] with the assigned name as well as a numerical index.
      *
      * If you don't want to capture the group match, use [startNonCapturingGroup].
      *
