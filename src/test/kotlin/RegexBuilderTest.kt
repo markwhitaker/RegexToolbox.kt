@@ -9,6 +9,7 @@ import uk.co.mainwave.regextoolboxkotlin.RegexBuilder
 import uk.co.mainwave.regextoolboxkotlin.RegexBuilderException
 import uk.co.mainwave.regextoolboxkotlin.RegexOptions
 import uk.co.mainwave.regextoolboxkotlin.RegexQuantifier
+import java.util.regex.Pattern
 
 class RegexBuilderTest {
     companion object {
@@ -33,6 +34,17 @@ class RegexBuilderTest {
         private const val IPV4_ADDRESS = "172.15.254.1"
         private const val IPV6_ADDRESS = "2001:0db8:85a3:0000:0000:8a2e:0370:7334"
         private const val MAC_ADDRESS = "00:3e:e1:c4:5d:df"
+    }
+
+    @Test
+    fun testBuildPattern() {
+        val pattern = RegexBuilder()
+            .text("cat")
+            .buildPattern(RegexOptions.IGNORE_CASE, RegexOptions.MULTILINE)
+
+        assertEquals("cat", pattern.toString())
+        assertEquals(Pattern.CASE_INSENSITIVE, pattern.flags() and Pattern.CASE_INSENSITIVE)
+        assertEquals(Pattern.MULTILINE, pattern.flags() and Pattern.MULTILINE)
     }
 
     @Test

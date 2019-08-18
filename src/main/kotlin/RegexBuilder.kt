@@ -1,5 +1,7 @@
 package uk.co.mainwave.regextoolboxkotlin
 
+import java.util.regex.Pattern
+
 /**
  * Class to build regular expressions in a more human-readable way using a fluent API.
  * <p>
@@ -44,6 +46,18 @@ class RegexBuilder {
                 throw RegexBuilderException("$openGroupCount groups have been started but not ended", stringBuilder)
             }
         }
+
+    /**
+     * Build and return a [Pattern] object from the current builder state.
+     * Note that the normal Kotlin thing to do is to use [buildRegex], but this is for legacy cases where you need a Pattern.
+     * After calling this the builder is cleared and ready to re-use.
+     *
+     * @param options Any number of regex options to apply to the regex
+     * @return [Regex] as built
+     * @throws RegexBuilderException An error occurred when building the regex
+     */
+    @Throws(RegexBuilderException::class)
+    fun buildPattern(vararg options: RegexOptions): Pattern = buildRegex(*options).toPattern()
 
     /**
      * Add text to the regex. Any regex special characters will be escaped as necessary
