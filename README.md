@@ -1,3 +1,5 @@
+![icon](artwork/RegexToolbox-icon-100.png)
+
 # RegexToolbox.kt [![Build Status](https://travis-ci.com/markwhitaker/RegexToolbox.kt.svg?branch=master)](https://travis-ci.com/markwhitaker/RegexToolbox.kt)
 
 Regular expression tools for Kotlin developers.
