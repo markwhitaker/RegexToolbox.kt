@@ -35,7 +35,21 @@ open class RegexQuantifier protected constructor(
          *
          * @return A greedy quantifier: use [RegexGreedyQuantifier.butAsFewAsPossible] to make it non-greedy
          */
+        @Deprecated(
+            "Use zeroOrOne()",
+            ReplaceWith(
+                "RegexQuantifier.zeroOrOne()",
+                "uk.co.mainwave.regextoolboxkotlin.RegexQuantifier.Companion.zeroOrOne"
+            )
+        )
         fun noneOrOne() = RegexGreedyQuantifier("?")
+
+        /**
+         * Quantifier to match the preceding element once or not at all
+         *
+         * @return A greedy quantifier: use [RegexGreedyQuantifier.butAsFewAsPossible] to make it non-greedy
+         */
+        fun zeroOrOne() = RegexGreedyQuantifier("?")
 
         /**
          * Quantifier to match an exact number of occurrences of the preceding element

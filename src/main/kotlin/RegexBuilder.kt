@@ -126,6 +126,45 @@ class RegexBuilder {
     fun nonWhitespace(quantifier: RegexQuantifier? = null) = append("\\S", quantifier)
 
     /**
+     * Add an element to represent any amount of white space, including none. This is just a convenient alias for
+     * `whitespace(RegexQuantifier.zeroOrMore())`.
+     */
+    fun possibleWhitespace() = whitespace(RegexQuantifier.zeroOrMore())
+
+    /**
+     * Add an element to match a single space character. If you want to match any kind of white space, use
+     * [whitespace].
+     *
+     * @param quantifier Quantifier to apply to this element
+     * @return The current [RegexBuilder] object, for method chaining
+     */
+    fun space(quantifier: RegexQuantifier? = null) = append(" ", quantifier)
+
+    /**
+     * Add an element to match a single tab character.
+     *
+     * @param quantifier Quantifier to apply to this element
+     * @return The current [RegexBuilder] object, for method chaining
+     */
+    fun tab(quantifier: RegexQuantifier? = null) = append("\\t", quantifier)
+
+    /**
+     * Add an element to match a single line feed character.
+     *
+     * @param quantifier Quantifier to apply to this element
+     * @return The current [RegexBuilder] object, for method chaining
+     */
+    fun lineFeed(quantifier: RegexQuantifier? = null) = append("\\n", quantifier)
+
+    /**
+     * Add an element to match a single carriage return character.
+     *
+     * @param quantifier Quantifier to apply to this element
+     * @return The current [RegexBuilder] object, for method chaining
+     */
+    fun carriageReturn(quantifier: RegexQuantifier? = null) = append("\\r", quantifier)
+
+    /**
      * Add an element to match any single decimal digit (0-9).
      *
      * @param quantifier Quantifier to apply to this element
@@ -282,11 +321,20 @@ class RegexBuilder {
                     makeSafeForRegex(it)
                 }
                 startNonCapturingGroup()
-                    .regexText(stringsSafeAndJoined, quantifier)
+                    .regexText(stringsSafeAndJoined)
                     .endGroup(quantifier)
             }
         }
     }
+
+    /**
+     * Add a group of alternatives, to match any of the strings provided
+     *
+     * @param strings    A number of strings, any one of which will be matched
+     * @param quantifier Quantifier to apply to this element
+     * @return The current [RegexBuilder] object, for method chaining
+     */
+    fun anyOf(vararg strings: String, quantifier: RegexQuantifier? = null): RegexBuilder = anyOf(strings.toList(), quantifier)
 
     // ZERO-WIDTH ASSERTIONS
 
