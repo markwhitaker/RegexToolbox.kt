@@ -40,10 +40,10 @@ bintray {
     publish = true
     pkg {
         repo = 'Maven'
-        name = 'RegexToolbox.kt'
+        name = 'regextoolbox-kotlin'
         version {
             name = gitVersion()
-            desc = 'RegexToolbox for Kotlin'
+            desc = 'Regular expression tools for Kotlin developers'
             vcsTag = gitVersion()
         }
     }
