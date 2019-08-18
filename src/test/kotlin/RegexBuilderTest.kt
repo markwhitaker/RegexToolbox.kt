@@ -9,6 +9,7 @@ import uk.co.mainwave.regextoolboxkotlin.RegexBuilder
 import uk.co.mainwave.regextoolboxkotlin.RegexBuilderException
 import uk.co.mainwave.regextoolboxkotlin.RegexOptions
 import uk.co.mainwave.regextoolboxkotlin.RegexQuantifier
+import uk.co.mainwave.regextoolboxkotlin.RegexQuantifier.Companion
 import java.util.regex.Pattern
 
 class RegexBuilderTest {
@@ -1673,7 +1674,7 @@ class RegexBuilderTest {
     fun testOneOrNone() {
         val regex = RegexBuilder()
             .letter()
-            .digit(RegexQuantifier.noneOrOne())
+            .digit(RegexQuantifier.zeroOrOne())
             .letter()
             .buildRegex()
 
@@ -1989,7 +1990,7 @@ class RegexBuilderTest {
         // Very basic URL checker!
         val regex = RegexBuilder()
             .text("http")
-            .text("s", RegexQuantifier.noneOrOne())
+            .text("s", RegexQuantifier.zeroOrOne())
             .text("://")
             .nonWhitespace(RegexQuantifier.oneOrMore())
             .anyCharacterFrom("a-zA-Z0-9_/") // Valid last characters
@@ -2264,7 +2265,7 @@ class RegexBuilderTest {
     @Test
     fun testNoneOrOneButAsFewAsPossible() {
         val regex = RegexBuilder()
-            .digit(RegexQuantifier.noneOrOne().butAsFewAsPossible())
+            .digit(RegexQuantifier.zeroOrOne().butAsFewAsPossible())
             .buildRegex()
 
         assertEquals("\\d??", regex.toString())
