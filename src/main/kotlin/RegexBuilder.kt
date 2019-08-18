@@ -126,6 +126,12 @@ class RegexBuilder {
     fun nonWhitespace(quantifier: RegexQuantifier? = null) = append("\\S", quantifier)
 
     /**
+     * Add an element to represent any amount of white space, including none. This is just a convenient alias for
+     * `whitespace(RegexQuantifier.zeroOrMore())`.
+     */
+    fun possibleWhitespace() = whitespace(RegexQuantifier.zeroOrMore())
+
+    /**
      * Add an element to match a single space character. If you want to match any kind of white space, use
      * [whitespace].
      *

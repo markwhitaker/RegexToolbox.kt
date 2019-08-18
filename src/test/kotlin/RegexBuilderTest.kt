@@ -319,6 +319,43 @@ class RegexBuilderTest {
     }
 
     @Test
+    fun testPossibleWhitespace() {
+        val regex = RegexBuilder()
+            .nonWhitespace()
+            .possibleWhitespace()
+            .nonWhitespace()
+            .buildRegex()
+
+        assertEquals("\\S\\s*\\S", regex.toString())
+        assertFalse(regex.containsMatchIn("1"))
+        assertFalse(regex.containsMatchIn("0"))
+        assertTrue(regex.containsMatchIn("999"))
+        assertTrue(regex.containsMatchIn("there's a digit in here s0mewhere"))
+        assertFalse(regex.containsMatchIn(" "))
+        assertTrue(regex.containsMatchIn("abc"))
+        assertTrue(regex.containsMatchIn("xFFF"))
+
+        assertTrue(regex.containsMatchIn(BOTH_CASE_ALPHABET))
+        assertTrue(regex.containsMatchIn(UPPER_CASE_ALPHABET))
+        assertTrue(regex.containsMatchIn(LOWER_CASE_ALPHABET))
+        assertTrue(regex.containsMatchIn(DECIMAL_DIGITS))
+        assertTrue(regex.containsMatchIn(BOTH_CASE_HEX_DIGITS))
+        assertTrue(regex.containsMatchIn(UPPER_CASE_HEX_DIGITS))
+        assertTrue(regex.containsMatchIn(LOWER_CASE_HEX_DIGITS))
+        assertTrue(regex.containsMatchIn(SYMBOLS))
+        assertFalse(regex.containsMatchIn(WHITE_SPACE))
+        assertFalse(regex.containsMatchIn(CONTROL_CHARACTERS))
+        assertFalse(regex.containsMatchIn(EMPTY))
+        assertTrue(regex.containsMatchIn(SIMPLE_NAME))
+        assertTrue(regex.containsMatchIn(SIMPLE_EMAIL_ADDRESS))
+        assertTrue(regex.containsMatchIn(SIMPLE_HTTP_URL))
+        assertTrue(regex.containsMatchIn(SIMPLE_HTTPS_URL))
+        assertTrue(regex.containsMatchIn(IPV4_ADDRESS))
+        assertTrue(regex.containsMatchIn(IPV6_ADDRESS))
+        assertTrue(regex.containsMatchIn(MAC_ADDRESS))
+    }
+
+    @Test
     fun testSpace() {
         val regex = RegexBuilder()
             .space()
