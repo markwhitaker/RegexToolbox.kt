@@ -1,5 +1,5 @@
 ![icon](artwork/RegexToolbox-icon-100.png)
-# RegexToolbox.kt [![CircleCI](https://circleci.com/gh/markwhitaker/RegexToolbox.kt.svg?style=shield)](https://circleci.com/gh/markwhitaker/RegexToolbox.kt)
+# RegexToolbox.kt [![CircleCI](https://circleci.com/gh/markwhitaker/RegexToolbox.kt.svg?style=shield)](https://circleci.com/gh/markwhitaker/RegexToolbox.kt) [![Download](https://api.bintray.com/packages/markwhitaker/Maven/RegexToolbox.kt/images/download.svg) ](https://bintray.com/markwhitaker/Maven/RegexToolbox.kt/_latestVersion)
 
 Regular expression tools for Kotlin developers.
 
@@ -10,6 +10,14 @@ Regular expression tools for Kotlin developers.
  - No knowledge of regular expression syntax is required: just use simple, intuitively-named classes and methods.
  - Code is easier to read, understand and maintain.
  - Code is safer and far less prone to regular expression syntax errors and programmer errors.
+
+It is fully documented in the [project wiki](https://github.com/markwhitaker/RegexToolbox.kt/wiki).
+
+## Usage (Gradle)
+
+Replace `x.y.z` with the latest version.
+
+```implementation 'uk.co.mainwave.regextoolbox:RegexToolbox.kt:x.y.z'```
 
 ---
 ![icon](https://raw.githubusercontent.com/markwhitaker/RegexToolbox.Java/master/artwork/RegexToolbox-icon-32.png) **Java developer?** Check out the Java version of this library, [RegexToolbox.Java](https://github.com/markwhitaker/RegexToolbox.Java).
