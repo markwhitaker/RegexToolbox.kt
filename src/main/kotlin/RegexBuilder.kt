@@ -321,11 +321,20 @@ class RegexBuilder {
                     makeSafeForRegex(it)
                 }
                 startNonCapturingGroup()
-                    .regexText(stringsSafeAndJoined, quantifier)
+                    .regexText(stringsSafeAndJoined)
                     .endGroup(quantifier)
             }
         }
     }
+
+    /**
+     * Add a group of alternatives, to match any of the strings provided
+     *
+     * @param strings    A number of strings, any one of which will be matched
+     * @param quantifier Quantifier to apply to this element
+     * @return The current [RegexBuilder] object, for method chaining
+     */
+    fun anyOf(vararg strings: String, quantifier: RegexQuantifier? = null): RegexBuilder = anyOf(strings.toList(), quantifier)
 
     // ZERO-WIDTH ASSERTIONS
 

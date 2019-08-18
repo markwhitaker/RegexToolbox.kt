@@ -1189,6 +1189,116 @@ class RegexBuilderTest {
     }
 
     @Test
+    fun testAnyOfWithQuantifier() {
+        val regex = RegexBuilder()
+            .anyOf(listOf("cat", "dog", "|"), RegexQuantifier.exactly(2))
+            .buildRegex()
+
+        assertEquals("(?:cat|dog|\\|){2}", regex.toString())
+        assertTrue(regex.containsMatchIn("catdog"))
+        assertTrue(regex.containsMatchIn("cat|dog"))
+        assertFalse(regex.containsMatchIn("cat"))
+        assertTrue(regex.containsMatchIn("catcat"))
+        assertTrue(regex.containsMatchIn("catcatcat"))
+        assertFalse(regex.containsMatchIn("dog"))
+        assertTrue(regex.containsMatchIn("dogdog"))
+        assertTrue(regex.containsMatchIn("dogdogdog"))
+        assertFalse(regex.containsMatchIn("|"))
+        assertTrue(regex.containsMatchIn("||"))
+        assertTrue(regex.containsMatchIn("|||"))
+
+        assertFalse(regex.containsMatchIn(BOTH_CASE_ALPHABET))
+        assertFalse(regex.containsMatchIn(UPPER_CASE_ALPHABET))
+        assertFalse(regex.containsMatchIn(LOWER_CASE_ALPHABET))
+        assertFalse(regex.containsMatchIn(DECIMAL_DIGITS))
+        assertFalse(regex.containsMatchIn(BOTH_CASE_HEX_DIGITS))
+        assertFalse(regex.containsMatchIn(UPPER_CASE_HEX_DIGITS))
+        assertFalse(regex.containsMatchIn(LOWER_CASE_HEX_DIGITS))
+        assertFalse(regex.containsMatchIn(SYMBOLS))
+        assertFalse(regex.containsMatchIn(WHITE_SPACE))
+        assertFalse(regex.containsMatchIn(CONTROL_CHARACTERS))
+        assertFalse(regex.containsMatchIn(EMPTY))
+        assertFalse(regex.containsMatchIn(SIMPLE_NAME))
+        assertFalse(regex.containsMatchIn(SIMPLE_EMAIL_ADDRESS))
+        assertFalse(regex.containsMatchIn(SIMPLE_HTTP_URL))
+        assertFalse(regex.containsMatchIn(SIMPLE_HTTPS_URL))
+        assertFalse(regex.containsMatchIn(IPV4_ADDRESS))
+        assertFalse(regex.containsMatchIn(IPV6_ADDRESS))
+        assertFalse(regex.containsMatchIn(MAC_ADDRESS))
+    }
+
+    @Test
+    fun testVarargAnyOf() {
+        val regex = RegexBuilder()
+            .anyOf("cat", "dog", "|")
+            .buildRegex()
+
+        assertEquals("(?:cat|dog|\\|)", regex.toString())
+        assertFalse(regex.containsMatchIn("ca do"))
+        assertTrue(regex.containsMatchIn("cat"))
+        assertTrue(regex.containsMatchIn("dog"))
+        assertTrue(regex.containsMatchIn("|"))
+
+        assertFalse(regex.containsMatchIn(BOTH_CASE_ALPHABET))
+        assertFalse(regex.containsMatchIn(UPPER_CASE_ALPHABET))
+        assertFalse(regex.containsMatchIn(LOWER_CASE_ALPHABET))
+        assertFalse(regex.containsMatchIn(DECIMAL_DIGITS))
+        assertFalse(regex.containsMatchIn(BOTH_CASE_HEX_DIGITS))
+        assertFalse(regex.containsMatchIn(UPPER_CASE_HEX_DIGITS))
+        assertFalse(regex.containsMatchIn(LOWER_CASE_HEX_DIGITS))
+        assertTrue(regex.containsMatchIn(SYMBOLS))
+        assertFalse(regex.containsMatchIn(WHITE_SPACE))
+        assertFalse(regex.containsMatchIn(CONTROL_CHARACTERS))
+        assertFalse(regex.containsMatchIn(EMPTY))
+        assertFalse(regex.containsMatchIn(SIMPLE_NAME))
+        assertFalse(regex.containsMatchIn(SIMPLE_EMAIL_ADDRESS))
+        assertFalse(regex.containsMatchIn(SIMPLE_HTTP_URL))
+        assertFalse(regex.containsMatchIn(SIMPLE_HTTPS_URL))
+        assertFalse(regex.containsMatchIn(IPV4_ADDRESS))
+        assertFalse(regex.containsMatchIn(IPV6_ADDRESS))
+        assertFalse(regex.containsMatchIn(MAC_ADDRESS))
+    }
+
+    @Test
+    fun testVarargAnyOfWithQuantifier() {
+        val regex = RegexBuilder()
+            .anyOf("cat", "dog", "|", quantifier = RegexQuantifier.exactly(2))
+            .buildRegex()
+
+        assertEquals("(?:cat|dog|\\|){2}", regex.toString())
+        assertTrue(regex.containsMatchIn("catdog"))
+        assertTrue(regex.containsMatchIn("cat|dog"))
+        assertFalse(regex.containsMatchIn("cat"))
+        assertTrue(regex.containsMatchIn("catcat"))
+        assertTrue(regex.containsMatchIn("catcatcat"))
+        assertFalse(regex.containsMatchIn("dog"))
+        assertTrue(regex.containsMatchIn("dogdog"))
+        assertTrue(regex.containsMatchIn("dogdogdog"))
+        assertFalse(regex.containsMatchIn("|"))
+        assertTrue(regex.containsMatchIn("||"))
+        assertTrue(regex.containsMatchIn("|||"))
+
+        assertFalse(regex.containsMatchIn(BOTH_CASE_ALPHABET))
+        assertFalse(regex.containsMatchIn(UPPER_CASE_ALPHABET))
+        assertFalse(regex.containsMatchIn(LOWER_CASE_ALPHABET))
+        assertFalse(regex.containsMatchIn(DECIMAL_DIGITS))
+        assertFalse(regex.containsMatchIn(BOTH_CASE_HEX_DIGITS))
+        assertFalse(regex.containsMatchIn(UPPER_CASE_HEX_DIGITS))
+        assertFalse(regex.containsMatchIn(LOWER_CASE_HEX_DIGITS))
+        assertFalse(regex.containsMatchIn(SYMBOLS))
+        assertFalse(regex.containsMatchIn(WHITE_SPACE))
+        assertFalse(regex.containsMatchIn(CONTROL_CHARACTERS))
+        assertFalse(regex.containsMatchIn(EMPTY))
+        assertFalse(regex.containsMatchIn(SIMPLE_NAME))
+        assertFalse(regex.containsMatchIn(SIMPLE_EMAIL_ADDRESS))
+        assertFalse(regex.containsMatchIn(SIMPLE_HTTP_URL))
+        assertFalse(regex.containsMatchIn(SIMPLE_HTTPS_URL))
+        assertFalse(regex.containsMatchIn(IPV4_ADDRESS))
+        assertFalse(regex.containsMatchIn(IPV6_ADDRESS))
+        assertFalse(regex.containsMatchIn(MAC_ADDRESS))
+    }
+
+    @Test
     fun testAnyOfEmptyOrSingle() {
         val anyOfEmptyRegex = RegexBuilder()
             .anyOf(emptyList())
