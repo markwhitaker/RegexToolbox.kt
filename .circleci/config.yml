@@ -1,0 +1,66 @@
+# Java Gradle CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-java/ for more details
+#
+
+aliases:
+  - &setup-environment
+    docker:
+      - image: circleci/openjdk:8-jdk
+    working_directory: ~/repo
+    environment: # Customize the JVM maximum heap limit
+      JVM_OPTS: -Xmx3200m
+      TERM: dumb
+
+  - &load-cache
+    restore_cache:
+      keys:
+        - v1-dependencies-{{ checksum "build.gradle" }}
+        # fallback to using the latest cache if no exact match is found
+        - v1-dependencies-
+
+  - &save-cache
+    save_cache:
+      paths:
+        - ~/.gradle
+      key: v1-dependencies-{{ checksum "build.gradle" }}
+
+version: 2
+jobs:
+  build:
+    <<: *setup-environment
+    steps:
+      - checkout
+      - *load-cache
+      - run: gradle dependencies
+      - *save-cache
+      # Build the library and run tests
+      - run: gradle build
+
+  deploy-to-bintray:
+    <<: *setup-environment
+    steps:
+      - checkout
+      - *load-cache
+      - run: gradle dependencies
+      - *save-cache
+      # Deploy to bintray
+      - run: gradle bintrayUpload
+
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+      - build:
+          filters:
+            tags:
+              only: /.*/
+      - deploy-to-bintray:
+          requires:
+            - build
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              # Only tags beginning x.y.z
+              only: /^\d+\.\d+\.\d+.*$/
