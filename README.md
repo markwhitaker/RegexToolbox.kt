@@ -17,7 +17,7 @@ It is fully documented in the [project wiki](https://github.com/markwhitaker/Reg
 
 Replace `x.y.z` with the latest version.
 
-```implementation 'uk.co.mainwave.regextoolbox:RegexToolbox.kt:x.y.z'```
+```implementation 'uk.co.mainwave.regextoolbox:regextoolbox-kotlin:x.y.z'```
 
 ---
 ![icon](https://raw.githubusercontent.com/markwhitaker/RegexToolbox.Java/master/artwork/RegexToolbox-icon-32.png) **Java developer?** Check out the Java version of this library, [RegexToolbox.Java](https://github.com/markwhitaker/RegexToolbox.Java).
