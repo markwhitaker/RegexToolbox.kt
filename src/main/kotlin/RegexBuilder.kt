@@ -126,6 +126,39 @@ class RegexBuilder {
     fun nonWhitespace(quantifier: RegexQuantifier? = null) = append("\\S", quantifier)
 
     /**
+     * Add an element to match a single space character. If you want to match any kind of white space, use
+     * [whitespace].
+     *
+     * @param quantifier Quantifier to apply to this element
+     * @return The current [RegexBuilder] object, for method chaining
+     */
+    fun space(quantifier: RegexQuantifier? = null) = append(" ", quantifier)
+
+    /**
+     * Add an element to match a single tab character.
+     *
+     * @param quantifier Quantifier to apply to this element
+     * @return The current [RegexBuilder] object, for method chaining
+     */
+    fun tab(quantifier: RegexQuantifier? = null) = append("\\t", quantifier)
+
+    /**
+     * Add an element to match a single line feed character.
+     *
+     * @param quantifier Quantifier to apply to this element
+     * @return The current [RegexBuilder] object, for method chaining
+     */
+    fun lineFeed(quantifier: RegexQuantifier? = null) = append("\\n", quantifier)
+
+    /**
+     * Add an element to match a single carriage return character.
+     *
+     * @param quantifier Quantifier to apply to this element
+     * @return The current [RegexBuilder] object, for method chaining
+     */
+    fun carriageReturn(quantifier: RegexQuantifier? = null) = append("\\r", quantifier)
+
+    /**
      * Add an element to match any single decimal digit (0-9).
      *
      * @param quantifier Quantifier to apply to this element
