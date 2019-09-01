@@ -5,15 +5,14 @@ import java.util.regex.Pattern
 /**
  * Class to build regular expressions in a more human-readable way using a fluent API.
  * <p>
- * To use, chain method calls representing the elements you want to match, and finish with [buildRegex] to build the
- * [Regex].
+ * To build a regex, use the `regex {}` builder function.
  * <p>
  * Example:
  * <pre>
- * val regex = RegexBuilder()
- *     .text("cat")
- *     .endOfString()
- *     .buildRegex()
+ * val regex = regex {
+ *     text("cat")
+ *     endOfString()
+ * }
  * </pre>
  */
 class RegexBuilder {
@@ -432,6 +431,17 @@ class RegexBuilder {
         openGroupCount--
         return append(")", quantifier)
     }
+
+    // GROUPS (DSL)
+
+    fun group(quantifier: RegexQuantifier? = null, buildSteps: RegexBuilder.() -> Unit) =
+        startGroup().apply(buildSteps).endGroup(quantifier)
+
+    fun namedGroup(name: String, quantifier: RegexQuantifier? = null, buildSteps: RegexBuilder.() -> Unit) =
+        startNamedGroup(name).apply(buildSteps).endGroup(quantifier)
+
+    fun nonCapturingGroup(quantifier: RegexQuantifier? = null, buildSteps: RegexBuilder.() -> Unit) =
+        startNonCapturingGroup().apply(buildSteps).endGroup(quantifier)
 
     // PRIVATE METHODS
 

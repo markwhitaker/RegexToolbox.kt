@@ -4,8 +4,6 @@ import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import uk.co.mainwave.regextoolboxkotlin.RegexBuilder
-import uk.co.mainwave.regextoolboxkotlin.RegexBuilderException
 import uk.co.mainwave.regextoolboxkotlin.RegexOptions.IGNORE_CASE
 import uk.co.mainwave.regextoolboxkotlin.RegexOptions.MULTILINE
 import uk.co.mainwave.regextoolboxkotlin.RegexQuantifier.Companion.atLeast
@@ -15,14 +13,16 @@ import uk.co.mainwave.regextoolboxkotlin.RegexQuantifier.Companion.noMoreThan
 import uk.co.mainwave.regextoolboxkotlin.RegexQuantifier.Companion.oneOrMore
 import uk.co.mainwave.regextoolboxkotlin.RegexQuantifier.Companion.zeroOrMore
 import uk.co.mainwave.regextoolboxkotlin.RegexQuantifier.Companion.zeroOrOne
+import uk.co.mainwave.regextoolboxkotlin.pattern
+import uk.co.mainwave.regextoolboxkotlin.regex
 import java.util.regex.Pattern
 
-class RegexBuilderTest {
+class RegexBuilderDslTest {
     @Test
     fun testBuildPattern() {
-        val pattern = RegexBuilder()
-            .text("cat")
-            .buildPattern(IGNORE_CASE, MULTILINE)
+        val pattern = pattern(IGNORE_CASE, MULTILINE) {
+            text("cat")
+        }
 
         assertEquals("cat", pattern.toString())
         assertEquals(Pattern.CASE_INSENSITIVE, pattern.flags() and Pattern.CASE_INSENSITIVE)
@@ -31,9 +31,9 @@ class RegexBuilderTest {
 
     @Test
     fun testSimpleText() {
-        val regex = RegexBuilder()
-            .text("cat")
-            .buildRegex()
+        val regex = regex {
+            text("cat")
+        }
 
         assertEquals("cat", regex.toString())
         assertTrue(regex.matches("cat"))
@@ -63,9 +63,9 @@ class RegexBuilderTest {
 
     @Test
     fun testSimpleTextWithQuantifier() {
-        val regex = RegexBuilder()
-            .text("cat", exactly(2))
-            .buildRegex()
+        val regex = regex {
+            text("cat", exactly(2))
+        }
 
         assertEquals("(?:cat){2}", regex.toString())
         assertFalse(regex.containsMatchIn("cat"))
@@ -97,9 +97,9 @@ class RegexBuilderTest {
 
     @Test
     fun testSimpleTextCaseInsensitive() {
-        val regex = RegexBuilder()
-            .text("cat")
-            .buildRegex(IGNORE_CASE)
+        val regex = regex(IGNORE_CASE) {
+            text("cat")
+        }
 
         assertEquals("cat", regex.toString())
         assertTrue(regex.matches("cat"))
@@ -129,9 +129,9 @@ class RegexBuilderTest {
 
     @Test
     fun testSimpleTextWithRegexCharacters() {
-        val regex = RegexBuilder()
-            .text("\\.+*?[]{}()|^$")
-            .buildRegex()
+        val regex = regex {
+            text("\\.+*?[]{}()|^$")
+        }
 
         assertEquals("\\\\\\.\\+\\*\\?\\[\\]\\{\\}\\(\\)\\|\\^\\$", regex.toString())
         assertTrue(regex.containsMatchIn("\\.+*?[]{}()|^$"))
@@ -158,9 +158,9 @@ class RegexBuilderTest {
 
     @Test
     fun testRegexText() {
-        val regex = RegexBuilder()
-            .regexText("^\\scat\\b")
-            .buildRegex()
+        val regex = regex {
+            regexText("^\\scat\\b")
+        }
 
         assertEquals("^\\scat\\b", regex.toString())
         assertTrue(regex.containsMatchIn(" cat"))
@@ -193,9 +193,9 @@ class RegexBuilderTest {
 
     @Test
     fun testAnyCharacter() {
-        val regex = RegexBuilder()
-            .anyCharacter()
-            .buildRegex()
+        val regex = regex {
+            anyCharacter()
+        }
 
         assertEquals(".", regex.toString())
         assertTrue(regex.containsMatchIn(" "))
@@ -227,9 +227,9 @@ class RegexBuilderTest {
 
     @Test
     fun testWhitespace() {
-        val regex = RegexBuilder()
-            .whitespace()
-            .buildRegex()
+        val regex = regex {
+            whitespace()
+        }
 
         assertEquals("\\s", regex.toString())
         assertTrue(regex.containsMatchIn(" "))
@@ -263,9 +263,9 @@ class RegexBuilderTest {
 
     @Test
     fun testNonWhitespace() {
-        val regex = RegexBuilder()
-            .nonWhitespace()
-            .buildRegex()
+        val regex = regex {
+            nonWhitespace()
+        }
 
         assertEquals("\\S", regex.toString())
         assertTrue(regex.containsMatchIn("a"))
@@ -302,11 +302,11 @@ class RegexBuilderTest {
 
     @Test
     fun testPossibleWhitespace() {
-        val regex = RegexBuilder()
-            .nonWhitespace()
-            .possibleWhitespace()
-            .nonWhitespace()
-            .buildRegex()
+        val regex = regex {
+            nonWhitespace()
+            possibleWhitespace()
+            nonWhitespace()
+        }
 
         assertEquals("\\S\\s*\\S", regex.toString())
         assertFalse(regex.containsMatchIn("1"))
@@ -339,9 +339,9 @@ class RegexBuilderTest {
 
     @Test
     fun testSpace() {
-        val regex = RegexBuilder()
-            .space()
-            .buildRegex()
+        val regex = regex {
+            space()
+        }
 
         assertEquals(" ", regex.toString())
         assertTrue(regex.containsMatchIn(" "))
@@ -375,9 +375,9 @@ class RegexBuilderTest {
 
     @Test
     fun testTab() {
-        val regex = RegexBuilder()
-            .tab()
-            .buildRegex()
+        val regex = regex {
+            tab()
+        }
 
         assertEquals("\\t", regex.toString())
         assertFalse(regex.containsMatchIn(" "))
@@ -411,9 +411,9 @@ class RegexBuilderTest {
 
     @Test
     fun testLineFeed() {
-        val regex = RegexBuilder()
-            .lineFeed()
-            .buildRegex()
+        val regex = regex {
+            lineFeed()
+        }
 
         assertEquals("\\n", regex.toString())
         assertFalse(regex.containsMatchIn(" "))
@@ -447,9 +447,9 @@ class RegexBuilderTest {
 
     @Test
     fun testCarriageReturn() {
-        val regex = RegexBuilder()
-            .carriageReturn()
-            .buildRegex()
+        val regex = regex {
+            carriageReturn()
+        }
 
         assertEquals("\\r", regex.toString())
         assertFalse(regex.containsMatchIn(" "))
@@ -483,9 +483,9 @@ class RegexBuilderTest {
 
     @Test
     fun testDigit() {
-        val regex = RegexBuilder()
-            .digit()
-            .buildRegex()
+        val regex = regex {
+            digit()
+        }
 
         assertEquals("\\d", regex.toString())
         assertTrue(regex.containsMatchIn("1"))
@@ -518,9 +518,9 @@ class RegexBuilderTest {
 
     @Test
     fun testNonDigit() {
-        val regex = RegexBuilder()
-            .nonDigit()
-            .buildRegex()
+        val regex = regex {
+            nonDigit()
+        }
 
         assertEquals("\\D", regex.toString())
         assertTrue(regex.containsMatchIn(" 1"))
@@ -554,9 +554,9 @@ class RegexBuilderTest {
 
     @Test
     fun testLetter() {
-        val regex = RegexBuilder()
-            .letter()
-            .buildRegex()
+        val regex = regex {
+            letter()
+        }
 
         assertEquals("[a-zA-Z]", regex.toString())
         assertTrue(regex.containsMatchIn("a"))
@@ -590,9 +590,9 @@ class RegexBuilderTest {
 
     @Test
     fun testNonLetter() {
-        val regex = RegexBuilder()
-            .nonLetter()
-            .buildRegex()
+        val regex = regex {
+            nonLetter()
+        }
 
         assertEquals("[^a-zA-Z]", regex.toString())
         assertTrue(regex.containsMatchIn(" 1"))
@@ -626,9 +626,9 @@ class RegexBuilderTest {
 
     @Test
     fun testUppercaseLetter() {
-        val regex = RegexBuilder()
-            .uppercaseLetter()
-            .buildRegex()
+        val regex = regex {
+            uppercaseLetter()
+        }
 
         assertEquals("[A-Z]", regex.toString())
         assertTrue(regex.containsMatchIn("A"))
@@ -662,9 +662,9 @@ class RegexBuilderTest {
 
     @Test
     fun testLowercaseLetter() {
-        val regex = RegexBuilder()
-            .lowercaseLetter()
-            .buildRegex()
+        val regex = regex {
+            lowercaseLetter()
+        }
 
         assertEquals("[a-z]", regex.toString())
         assertTrue(regex.containsMatchIn("a"))
@@ -698,9 +698,9 @@ class RegexBuilderTest {
 
     @Test
     fun testLetterOrDigit() {
-        val regex = RegexBuilder()
-            .letterOrDigit()
-            .buildRegex()
+        val regex = regex {
+            letterOrDigit()
+        }
 
         assertEquals("[a-zA-Z0-9]", regex.toString())
         assertTrue(regex.containsMatchIn("A"))
@@ -735,9 +735,9 @@ class RegexBuilderTest {
 
     @Test
     fun testNonLetterOrDigit() {
-        val regex = RegexBuilder()
-            .nonLetterOrDigit()
-            .buildRegex()
+        val regex = regex {
+            nonLetterOrDigit()
+        }
 
         assertEquals("[^a-zA-Z0-9]", regex.toString())
         assertFalse(regex.containsMatchIn("A"))
@@ -772,9 +772,9 @@ class RegexBuilderTest {
 
     @Test
     fun testHexDigit() {
-        val regex = RegexBuilder()
-            .hexDigit()
-            .buildRegex()
+        val regex = regex {
+            hexDigit()
+        }
 
         assertEquals("[0-9A-Fa-f]", regex.toString())
         assertTrue(regex.containsMatchIn("A"))
@@ -809,9 +809,9 @@ class RegexBuilderTest {
 
     @Test
     fun testUppercaseHexDigit() {
-        val regex = RegexBuilder()
-            .uppercaseHexDigit()
-            .buildRegex()
+        val regex = regex {
+            uppercaseHexDigit()
+        }
 
         assertEquals("[0-9A-F]", regex.toString())
         assertTrue(regex.containsMatchIn("A"))
@@ -846,9 +846,9 @@ class RegexBuilderTest {
 
     @Test
     fun testLowercaseHexDigit() {
-        val regex = RegexBuilder()
-            .lowercaseHexDigit()
-            .buildRegex()
+        val regex = regex {
+            lowercaseHexDigit()
+        }
 
         assertEquals("[0-9a-f]", regex.toString())
         assertFalse(regex.containsMatchIn("A"))
@@ -883,9 +883,9 @@ class RegexBuilderTest {
 
     @Test
     fun testNonHexDigit() {
-        val regex = RegexBuilder()
-            .nonHexDigit()
-            .buildRegex()
+        val regex = regex {
+            nonHexDigit()
+        }
 
         assertEquals("[^0-9A-Fa-f]", regex.toString())
         assertFalse(regex.containsMatchIn("A"))
@@ -920,9 +920,9 @@ class RegexBuilderTest {
 
     @Test
     fun testWordCharacter() {
-        val regex = RegexBuilder()
-            .wordCharacter()
-            .buildRegex()
+        val regex = regex {
+            wordCharacter()
+        }
 
         assertEquals("\\w", regex.toString())
         assertTrue(regex.containsMatchIn("A"))
@@ -957,9 +957,9 @@ class RegexBuilderTest {
 
     @Test
     fun testNonWordCharacter() {
-        val regex = RegexBuilder()
-            .nonWordCharacter()
-            .buildRegex()
+        val regex = regex {
+            nonWordCharacter()
+        }
 
         assertEquals("\\W", regex.toString())
         assertFalse(regex.containsMatchIn("A"))
@@ -994,9 +994,9 @@ class RegexBuilderTest {
 
     @Test
     fun testAnyCharacterFrom() {
-        val regex = RegexBuilder()
-            .anyCharacterFrom("cat")
-            .buildRegex()
+        val regex = regex {
+            anyCharacterFrom("cat")
+        }
 
         assertEquals("[cat]", regex.toString())
         assertTrue(regex.containsMatchIn("cat"))
@@ -1030,9 +1030,9 @@ class RegexBuilderTest {
 
     @Test
     fun testAnyCharacterFromWithCaretAtStart() {
-        val regex = RegexBuilder()
-            .anyCharacterFrom("^abc")
-            .buildRegex()
+        val regex = regex {
+            anyCharacterFrom("^abc")
+        }
 
         assertEquals("[\\^abc]", regex.toString())
         assertTrue(regex.containsMatchIn("jazz"))
@@ -1066,9 +1066,9 @@ class RegexBuilderTest {
 
     @Test
     fun testAnyCharacterFromWithCaretNotAtStart() {
-        val regex = RegexBuilder()
-            .anyCharacterFrom("a^bc")
-            .buildRegex()
+        val regex = regex {
+            anyCharacterFrom("a^bc")
+        }
 
         assertEquals("[a^bc]", regex.toString())
         assertTrue(regex.containsMatchIn("jazz"))
@@ -1102,9 +1102,9 @@ class RegexBuilderTest {
 
     @Test
     fun testAnyCharacterExcept() {
-        val regex = RegexBuilder()
-            .anyCharacterExcept("cat")
-            .buildRegex()
+        val regex = regex {
+            anyCharacterExcept("cat")
+        }
 
         assertEquals("[^cat]", regex.toString())
         assertFalse(regex.containsMatchIn("cat"))
@@ -1139,9 +1139,9 @@ class RegexBuilderTest {
 
     @Test
     fun testAnyOf() {
-        val regex = RegexBuilder()
-            .anyOf(listOf("cat", "dog", "|"))
-            .buildRegex()
+        val regex = regex {
+            anyOf(listOf("cat", "dog", "|"))
+        }
 
         assertEquals("(?:cat|dog|\\|)", regex.toString())
         assertFalse(regex.containsMatchIn("ca do"))
@@ -1171,9 +1171,9 @@ class RegexBuilderTest {
 
     @Test
     fun testAnyOfWithQuantifier() {
-        val regex = RegexBuilder()
-            .anyOf(listOf("cat", "dog", "|"), exactly(2))
-            .buildRegex()
+        val regex = regex {
+            anyOf(listOf("cat", "dog", "|"), exactly(2))
+        }
 
         assertEquals("(?:cat|dog|\\|){2}", regex.toString())
         assertTrue(regex.containsMatchIn("catdog"))
@@ -1210,9 +1210,9 @@ class RegexBuilderTest {
 
     @Test
     fun testVarargAnyOf() {
-        val regex = RegexBuilder()
-            .anyOf("cat", "dog", "|")
-            .buildRegex()
+        val regex = regex {
+            anyOf("cat", "dog", "|")
+        }
 
         assertEquals("(?:cat|dog|\\|)", regex.toString())
         assertFalse(regex.containsMatchIn("ca do"))
@@ -1242,9 +1242,9 @@ class RegexBuilderTest {
 
     @Test
     fun testVarargAnyOfWithQuantifier() {
-        val regex = RegexBuilder()
-            .anyOf("cat", "dog", "|", quantifier = exactly(2))
-            .buildRegex()
+        val regex = regex {
+            anyOf("cat", "dog", "|", quantifier = exactly(2))
+        }
 
         assertEquals("(?:cat|dog|\\|){2}", regex.toString())
         assertTrue(regex.containsMatchIn("catdog"))
@@ -1281,13 +1281,13 @@ class RegexBuilderTest {
 
     @Test
     fun testAnyOfEmptyOrSingle() {
-        val anyOfEmptyRegex = RegexBuilder()
-            .anyOf(emptyList())
-            .buildRegex()
+        val anyOfEmptyRegex = regex {
+            anyOf(emptyList())
+        }
 
-        val anyOfSingleRegex = RegexBuilder()
-            .anyOf(listOf("cat"))
-            .buildRegex()
+        val anyOfSingleRegex = regex {
+            anyOf(listOf("cat"))
+        }
 
         assertEquals("", anyOfEmptyRegex.toString())
         assertEquals("cat", anyOfSingleRegex.toString())
@@ -1295,10 +1295,10 @@ class RegexBuilderTest {
 
     @Test
     fun testStartOfString() {
-        val regex = RegexBuilder()
-            .startOfString()
-            .text("a")
-            .buildRegex()
+        val regex = regex {
+            startOfString()
+            text("a")
+        }
 
         assertEquals("^a", regex.toString())
         assertTrue(regex.containsMatchIn("a"))
@@ -1333,10 +1333,10 @@ class RegexBuilderTest {
 
     @Test
     fun testEndOfString() {
-        val regex = RegexBuilder()
-            .text("z")
-            .endOfString()
-            .buildRegex()
+        val regex = regex {
+            text("z")
+            endOfString()
+        }
 
         assertEquals("z$", regex.toString())
         assertTrue(regex.containsMatchIn("z"))
@@ -1371,10 +1371,10 @@ class RegexBuilderTest {
 
     @Test
     fun testWordBoundary() {
-        val regex = RegexBuilder()
-            .text("a")
-            .wordBoundary()
-            .buildRegex()
+        val regex = regex {
+            text("a")
+            wordBoundary()
+        }
 
         assertEquals("a\\b", regex.toString())
         assertTrue(regex.containsMatchIn("a"))
@@ -1411,13 +1411,13 @@ class RegexBuilderTest {
 
     @Test
     fun testSingleGroup() {
-        val regex = RegexBuilder()
-            .anyCharacter(zeroOrMore())
-            .startGroup()
-            .letter()
-            .digit()
-            .endGroup()
-            .buildRegex()
+        val regex = regex {
+            anyCharacter(zeroOrMore())
+            group {
+                letter()
+                digit()
+            }
+        }
 
         assertEquals(".*([a-zA-Z]\\d)", regex.toString())
 
@@ -1461,12 +1461,12 @@ class RegexBuilderTest {
 
     @Test
     fun testRepeatGroup() {
-        val regex = RegexBuilder()
-            .startGroup()
-            .letter()
-            .digit()
-            .endGroup()
-            .buildRegex()
+        val regex = regex {
+            group {
+                letter()
+                digit()
+            }
+        }
 
         assertEquals("([a-zA-Z]\\d)", regex.toString())
 
@@ -1503,13 +1503,13 @@ class RegexBuilderTest {
 
     @Test
     fun testNamedGroup() {
-        val regex = RegexBuilder()
-            .lowercaseLetter(oneOrMore())
-            .startNamedGroup("test123")
-            .digit(oneOrMore())
-            .endGroup()
-            .lowercaseLetter(oneOrMore())
-            .buildRegex()
+        val regex = regex {
+            lowercaseLetter(oneOrMore())
+            namedGroup("test123") {
+                digit(oneOrMore())
+            }
+            lowercaseLetter(oneOrMore())
+        }
 
         assertEquals("[a-z]+(?<test123>\\d+)[a-z]+", regex.toString())
 
@@ -1541,13 +1541,13 @@ class RegexBuilderTest {
 
     @Test
     fun testNonCapturingGroup() {
-        val regex = RegexBuilder()
-            .lowercaseLetter(oneOrMore())
-            .startNonCapturingGroup()
-            .digit(oneOrMore())
-            .endGroup()
-            .lowercaseLetter(oneOrMore())
-            .buildRegex()
+        val regex = regex {
+            lowercaseLetter(oneOrMore())
+            nonCapturingGroup {
+                digit(oneOrMore())
+            }
+            lowercaseLetter(oneOrMore())
+        }
 
         assertEquals("[a-z]+(?:\\d+)[a-z]+", regex.toString())
 
@@ -1578,15 +1578,15 @@ class RegexBuilderTest {
 
     @Test
     fun testMultipleGroups() {
-        val regex = RegexBuilder()
-            .startGroup()
-            .anyCharacter(zeroOrMore())
-            .endGroup()
-            .startGroup()
-            .letter()
-            .digit()
-            .endGroup()
-            .buildRegex()
+        val regex = regex {
+            group {
+                anyCharacter(zeroOrMore())
+            }
+            group {
+                letter()
+                digit()
+            }
+        }
 
         assertEquals("(.*)([a-zA-Z]\\d)", regex.toString())
 
@@ -1633,16 +1633,16 @@ class RegexBuilderTest {
 
     @Test
     fun testNestedGroups() {
-        val regex = RegexBuilder()
-            .anyCharacter() // Omit first character from groups
-            .startGroup()
-            .anyCharacter(zeroOrMore())
-            .startGroup()
-            .letter()
-            .digit()
-            .endGroup()
-            .endGroup()
-            .buildRegex()
+        val regex = regex {
+            anyCharacter() // Omit first character from groups
+            group {
+                anyCharacter(zeroOrMore())
+                group {
+                    letter()
+                    digit()
+                }
+            }
+        }
 
         assertEquals(".(.*([a-zA-Z]\\d))", regex.toString())
 
@@ -1689,11 +1689,11 @@ class RegexBuilderTest {
 
     @Test
     fun testZeroOrMore() {
-        val regex = RegexBuilder()
-            .letter()
-            .digit(zeroOrMore())
-            .letter()
-            .buildRegex()
+        val regex = regex {
+            letter()
+            digit(zeroOrMore())
+            letter()
+        }
 
         assertEquals("[a-zA-Z]\\d*[a-zA-Z]", regex.toString())
         assertTrue(regex.containsMatchIn("ab"))
@@ -1726,11 +1726,11 @@ class RegexBuilderTest {
 
     @Test
     fun testOneOrMore() {
-        val regex = RegexBuilder()
-            .letter()
-            .digit(oneOrMore())
-            .letter()
-            .buildRegex()
+        val regex = regex {
+            letter()
+            digit(oneOrMore())
+            letter()
+        }
 
         assertEquals("[a-zA-Z]\\d+[a-zA-Z]", regex.toString())
         assertFalse(regex.containsMatchIn("ab"))
@@ -1763,11 +1763,11 @@ class RegexBuilderTest {
 
     @Test
     fun testOneOrNone() {
-        val regex = RegexBuilder()
-            .letter()
-            .digit(zeroOrOne())
-            .letter()
-            .buildRegex()
+        val regex = regex {
+            letter()
+            digit(zeroOrOne())
+            letter()
+        }
 
         assertEquals("[a-zA-Z]\\d?[a-zA-Z]", regex.toString())
         assertTrue(regex.containsMatchIn("ab"))
@@ -1800,11 +1800,11 @@ class RegexBuilderTest {
 
     @Test
     fun testExactlyNTimes() {
-        val regex = RegexBuilder()
-            .letter()
-            .digit(exactly(3))
-            .letter()
-            .buildRegex()
+        val regex = regex {
+            letter()
+            digit(exactly(3))
+            letter()
+        }
 
         assertEquals("[a-zA-Z]\\d{3}[a-zA-Z]", regex.toString())
         assertFalse(regex.containsMatchIn("ab"))
@@ -1840,11 +1840,11 @@ class RegexBuilderTest {
 
     @Test
     fun testAtLeastQuantifier() {
-        val regex = RegexBuilder()
-            .letter()
-            .digit(atLeast(3))
-            .letter()
-            .buildRegex()
+        val regex = regex {
+            letter()
+            digit(atLeast(3))
+            letter()
+        }
 
         assertEquals("[a-zA-Z]\\d{3,}[a-zA-Z]", regex.toString())
         assertFalse(regex.containsMatchIn("ab"))
@@ -1880,11 +1880,11 @@ class RegexBuilderTest {
 
     @Test
     fun testNoMoreThanQuantifier() {
-        val regex = RegexBuilder()
-            .letter()
-            .digit(noMoreThan(3))
-            .letter()
-            .buildRegex()
+        val regex = regex {
+            letter()
+            digit(noMoreThan(3))
+            letter()
+        }
 
         assertEquals("[a-zA-Z]\\d{0,3}[a-zA-Z]", regex.toString())
         assertTrue(regex.containsMatchIn("ab"))
@@ -1920,11 +1920,11 @@ class RegexBuilderTest {
 
     @Test
     fun testBetweenMinMaxTimes() {
-        val regex = RegexBuilder()
-            .letter()
-            .digit(between(2, 4))
-            .letter()
-            .buildRegex()
+        val regex = regex {
+            letter()
+            digit(between(minimum = 2, maximum = 4))
+            letter()
+        }
 
         assertEquals("[a-zA-Z]\\d{2,4}[a-zA-Z]", regex.toString())
         assertFalse(regex.containsMatchIn("ab"))
@@ -1960,11 +1960,11 @@ class RegexBuilderTest {
 
     @Test
     fun testOptionMultiLine() {
-        val regex = RegexBuilder()
-            .startOfString()
-            .text("find me!")
-            .endOfString()
-            .buildRegex(MULTILINE)
+        val regex = regex(MULTILINE) {
+            startOfString()
+            text("find me!")
+            endOfString()
+        }
 
         assertEquals("^find me!$", regex.toString())
         assertTrue(regex.containsMatchIn("find me!"))
@@ -1998,9 +1998,9 @@ class RegexBuilderTest {
 
     @Test
     fun testOptionIgnoreCase() {
-        val regex = RegexBuilder()
-            .anyCharacterFrom("cat")
-            .buildRegex(IGNORE_CASE)
+        val regex = regex(IGNORE_CASE) {
+            anyCharacterFrom("cat")
+        }
 
         assertEquals("[cat]", regex.toString())
         assertTrue(regex.containsMatchIn("cat"))
@@ -2035,15 +2035,15 @@ class RegexBuilderTest {
     @Test
     fun testEmailAddress() {
         // Very basic e-mail address checker!
-        val regex = RegexBuilder()
-            .startOfString()
-            .nonWhitespace(atLeast(2))
-            .text("@")
-            .nonWhitespace(atLeast(2))
-            .text(".")
-            .nonWhitespace(atLeast(2))
-            .endOfString()
-            .buildRegex()
+        val regex = regex {
+            startOfString()
+            nonWhitespace(atLeast(2))
+            text("@")
+            nonWhitespace(atLeast(2))
+            text(".")
+            nonWhitespace(atLeast(2))
+            endOfString()
+        }
 
         assertEquals("^\\S{2,}@\\S{2,}\\.\\S{2,}$", regex.toString())
         assertTrue(regex.containsMatchIn("test.user@mainwave.co.uk"))
@@ -2079,13 +2079,13 @@ class RegexBuilderTest {
     @Test
     fun testUrl() {
         // Very basic URL checker!
-        val regex = RegexBuilder()
-            .text("http")
-            .text("s", zeroOrOne())
-            .text("://")
-            .nonWhitespace(oneOrMore())
-            .anyCharacterFrom("a-zA-Z0-9_/") // Valid last characters
-            .buildRegex()
+        val regex = regex {
+            text("http")
+            text("s", zeroOrOne())
+            text("://")
+            nonWhitespace(oneOrMore())
+            anyCharacterFrom("a-zA-Z0-9_/") // Valid last characters
+        }
 
         assertEquals("http(?:s)?://\\S+[a-zA-Z0-9_/]", regex.toString())
         assertTrue(regex.containsMatchIn("http://www.mainwave.co.uk"))
@@ -2133,15 +2133,15 @@ class RegexBuilderTest {
     fun testIp4Address() {
         // Very basic IPv4 address checker!
         // (doesn't check values are in range, for example)
-        val regex = RegexBuilder()
-            .startOfString()
-            .startGroup()
-            .digit(between(1, 3))
-            .text(".")
-            .endGroup(exactly(3))
-            .digit(between(1, 3))
-            .endOfString()
-            .buildRegex()
+        val regex = regex {
+            startOfString()
+            group(exactly(3)) {
+                digit(between(1, 3))
+                text(".")
+            }
+            digit(between(1, 3))
+            endOfString()
+        }
 
         assertEquals("^(\\d{1,3}\\.){3}\\d{1,3}$", regex.toString())
         assertTrue(regex.containsMatchIn("10.1.1.100"))
@@ -2175,34 +2175,11 @@ class RegexBuilderTest {
         assertFalse(regex.containsMatchIn(MAC_ADDRESS))
     }
 
-    @Test(expected = RegexBuilderException::class)
-    fun testExceptionGroupMismatch1() {
-        RegexBuilder()
-            .endGroup()
-            .buildRegex()
-    }
-
-    @Test(expected = RegexBuilderException::class)
-    fun testExceptionGroupMismatch2() {
-        RegexBuilder()
-            .startGroup()
-            .buildRegex()
-    }
-
-    @Test(expected = RegexBuilderException::class)
-    fun testExceptionGroupMismatch3() {
-        RegexBuilder()
-            .startGroup()
-            .startGroup()
-            .endGroup()
-            .buildRegex()
-    }
-
     @Test
     fun testZeroOrMoreButAsFewAsPossible() {
-        val regex = RegexBuilder()
-            .digit(zeroOrMore().butAsFewAsPossible())
-            .buildRegex()
+        val regex = regex {
+            digit(zeroOrMore().butAsFewAsPossible())
+        }
 
         assertEquals("\\d*?", regex.toString())
         val nonGreedyMatch = regex.find("999")
@@ -2231,9 +2208,9 @@ class RegexBuilderTest {
 
     @Test
     fun testOneOrMoreButAsFewAsPossible() {
-        val regex = RegexBuilder()
-            .digit(oneOrMore().butAsFewAsPossible())
-            .buildRegex()
+        val regex = regex {
+            digit(oneOrMore().butAsFewAsPossible())
+        }
 
         assertEquals("\\d+?", regex.toString())
         val nonGreedyMatch = regex.find("999")
@@ -2262,9 +2239,9 @@ class RegexBuilderTest {
 
     @Test
     fun testAtLeastButAsFewAsPossible() {
-        val regex = RegexBuilder()
-            .digit(atLeast(1).butAsFewAsPossible())
-            .buildRegex()
+        val regex = regex {
+            digit(atLeast(1).butAsFewAsPossible())
+        }
 
         assertEquals("\\d{1,}?", regex.toString())
         val nonGreedyMatch = regex.find("999")
@@ -2293,9 +2270,9 @@ class RegexBuilderTest {
 
     @Test
     fun testBetweenButAsFewAsPossible() {
-        val regex = RegexBuilder()
-            .digit(between(2, 100).butAsFewAsPossible())
-            .buildRegex()
+        val regex = regex {
+            digit(between(2, 100).butAsFewAsPossible())
+        }
 
         assertEquals("\\d{2,100}?", regex.toString())
         val nonGreedyMatch = regex.find("999")
@@ -2324,9 +2301,9 @@ class RegexBuilderTest {
 
     @Test
     fun testNoMoreThanButAsFewAsPossible() {
-        val regex = RegexBuilder()
-            .digit(noMoreThan(2).butAsFewAsPossible())
-            .buildRegex()
+        val regex = regex {
+            digit(noMoreThan(2).butAsFewAsPossible())
+        }
 
         assertEquals("\\d{0,2}?", regex.toString())
         val nonGreedyMatch = regex.find("999")
@@ -2355,9 +2332,9 @@ class RegexBuilderTest {
 
     @Test
     fun testNoneOrOneButAsFewAsPossible() {
-        val regex = RegexBuilder()
-            .digit(zeroOrOne().butAsFewAsPossible())
-            .buildRegex()
+        val regex = regex {
+            digit(zeroOrOne().butAsFewAsPossible())
+        }
 
         assertEquals("\\d??", regex.toString())
         val nonGreedyMatch = regex.find("999")
