@@ -6,13 +6,13 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 import uk.co.mainwave.regextoolboxkotlin.RegexOptions.IGNORE_CASE
 import uk.co.mainwave.regextoolboxkotlin.RegexOptions.MULTILINE
-import uk.co.mainwave.regextoolboxkotlin.RegexQuantifier.Companion.atLeast
-import uk.co.mainwave.regextoolboxkotlin.RegexQuantifier.Companion.between
-import uk.co.mainwave.regextoolboxkotlin.RegexQuantifier.Companion.exactly
-import uk.co.mainwave.regextoolboxkotlin.RegexQuantifier.Companion.noMoreThan
-import uk.co.mainwave.regextoolboxkotlin.RegexQuantifier.Companion.oneOrMore
-import uk.co.mainwave.regextoolboxkotlin.RegexQuantifier.Companion.zeroOrMore
-import uk.co.mainwave.regextoolboxkotlin.RegexQuantifier.Companion.zeroOrOne
+import uk.co.mainwave.regextoolboxkotlin.RegexQuantifier.AtLeast
+import uk.co.mainwave.regextoolboxkotlin.RegexQuantifier.Between
+import uk.co.mainwave.regextoolboxkotlin.RegexQuantifier.Exactly
+import uk.co.mainwave.regextoolboxkotlin.RegexQuantifier.NoMoreThan
+import uk.co.mainwave.regextoolboxkotlin.RegexQuantifier.OneOrMore
+import uk.co.mainwave.regextoolboxkotlin.RegexQuantifier.ZeroOrMore
+import uk.co.mainwave.regextoolboxkotlin.RegexQuantifier.ZeroOrOne
 import uk.co.mainwave.regextoolboxkotlin.pattern
 import uk.co.mainwave.regextoolboxkotlin.regex
 import java.util.regex.Pattern
@@ -64,7 +64,7 @@ class RegexBuilderDslTest {
     @Test
     fun testSimpleTextWithQuantifier() {
         val regex = regex {
-            text("cat", exactly(2))
+            text("cat", Exactly(2))
         }
 
         assertEquals("(?:cat){2}", regex.toString())
@@ -1172,7 +1172,7 @@ class RegexBuilderDslTest {
     @Test
     fun testAnyOfWithQuantifier() {
         val regex = regex {
-            anyOf(listOf("cat", "dog", "|"), exactly(2))
+            anyOf(listOf("cat", "dog", "|"), Exactly(2))
         }
 
         assertEquals("(?:cat|dog|\\|){2}", regex.toString())
@@ -1243,7 +1243,7 @@ class RegexBuilderDslTest {
     @Test
     fun testVarargAnyOfWithQuantifier() {
         val regex = regex {
-            anyOf("cat", "dog", "|", quantifier = exactly(2))
+            anyOf("cat", "dog", "|", quantifier = Exactly(2))
         }
 
         assertEquals("(?:cat|dog|\\|){2}", regex.toString())
@@ -1412,7 +1412,7 @@ class RegexBuilderDslTest {
     @Test
     fun testSingleGroup() {
         val regex = regex {
-            anyCharacter(zeroOrMore())
+            anyCharacter(ZeroOrMore)
             group {
                 letter()
                 digit()
@@ -1504,11 +1504,11 @@ class RegexBuilderDslTest {
     @Test
     fun testNamedGroup() {
         val regex = regex {
-            lowercaseLetter(oneOrMore())
+            lowercaseLetter(OneOrMore)
             namedGroup("test123") {
-                digit(oneOrMore())
+                digit(OneOrMore)
             }
-            lowercaseLetter(oneOrMore())
+            lowercaseLetter(OneOrMore)
         }
 
         assertEquals("[a-z]+(?<test123>\\d+)[a-z]+", regex.toString())
@@ -1542,11 +1542,11 @@ class RegexBuilderDslTest {
     @Test
     fun testNonCapturingGroup() {
         val regex = regex {
-            lowercaseLetter(oneOrMore())
+            lowercaseLetter(OneOrMore)
             nonCapturingGroup {
-                digit(oneOrMore())
+                digit(OneOrMore)
             }
-            lowercaseLetter(oneOrMore())
+            lowercaseLetter(OneOrMore)
         }
 
         assertEquals("[a-z]+(?:\\d+)[a-z]+", regex.toString())
@@ -1580,7 +1580,7 @@ class RegexBuilderDslTest {
     fun testMultipleGroups() {
         val regex = regex {
             group {
-                anyCharacter(zeroOrMore())
+                anyCharacter(ZeroOrMore)
             }
             group {
                 letter()
@@ -1636,7 +1636,7 @@ class RegexBuilderDslTest {
         val regex = regex {
             anyCharacter() // Omit first character from groups
             group {
-                anyCharacter(zeroOrMore())
+                anyCharacter(ZeroOrMore)
                 group {
                     letter()
                     digit()
@@ -1691,7 +1691,7 @@ class RegexBuilderDslTest {
     fun testZeroOrMore() {
         val regex = regex {
             letter()
-            digit(zeroOrMore())
+            digit(ZeroOrMore)
             letter()
         }
 
@@ -1728,7 +1728,7 @@ class RegexBuilderDslTest {
     fun testOneOrMore() {
         val regex = regex {
             letter()
-            digit(oneOrMore())
+            digit(OneOrMore)
             letter()
         }
 
@@ -1762,10 +1762,10 @@ class RegexBuilderDslTest {
     }
 
     @Test
-    fun testOneOrNone() {
+    fun testZeroOrOne() {
         val regex = regex {
             letter()
-            digit(zeroOrOne())
+            digit(ZeroOrOne)
             letter()
         }
 
@@ -1802,7 +1802,7 @@ class RegexBuilderDslTest {
     fun testExactlyNTimes() {
         val regex = regex {
             letter()
-            digit(exactly(3))
+            digit(Exactly(3))
             letter()
         }
 
@@ -1842,7 +1842,7 @@ class RegexBuilderDslTest {
     fun testAtLeastQuantifier() {
         val regex = regex {
             letter()
-            digit(atLeast(3))
+            digit(AtLeast(3))
             letter()
         }
 
@@ -1882,7 +1882,7 @@ class RegexBuilderDslTest {
     fun testNoMoreThanQuantifier() {
         val regex = regex {
             letter()
-            digit(noMoreThan(3))
+            digit(NoMoreThan(3))
             letter()
         }
 
@@ -1922,7 +1922,7 @@ class RegexBuilderDslTest {
     fun testBetweenMinMaxTimes() {
         val regex = regex {
             letter()
-            digit(between(minimum = 2, maximum = 4))
+            digit(Between(minimum = 2, maximum = 4))
             letter()
         }
 
@@ -2037,11 +2037,11 @@ class RegexBuilderDslTest {
         // Very basic e-mail address checker!
         val regex = regex {
             startOfString()
-            nonWhitespace(atLeast(2))
+            nonWhitespace(AtLeast(2))
             text("@")
-            nonWhitespace(atLeast(2))
+            nonWhitespace(AtLeast(2))
             text(".")
-            nonWhitespace(atLeast(2))
+            nonWhitespace(AtLeast(2))
             endOfString()
         }
 
@@ -2081,9 +2081,9 @@ class RegexBuilderDslTest {
         // Very basic URL checker!
         val regex = regex {
             text("http")
-            text("s", zeroOrOne())
+            text("s", ZeroOrOne)
             text("://")
-            nonWhitespace(oneOrMore())
+            nonWhitespace(OneOrMore)
             anyCharacterFrom("a-zA-Z0-9_/") // Valid last characters
         }
 
@@ -2135,11 +2135,11 @@ class RegexBuilderDslTest {
         // (doesn't check values are in range, for example)
         val regex = regex {
             startOfString()
-            group(exactly(3)) {
-                digit(between(1, 3))
+            group(Exactly(3)) {
+                digit(Between(1, 3))
                 text(".")
             }
-            digit(between(1, 3))
+            digit(Between(1, 3))
             endOfString()
         }
 
@@ -2178,7 +2178,7 @@ class RegexBuilderDslTest {
     @Test
     fun testZeroOrMoreButAsFewAsPossible() {
         val regex = regex {
-            digit(zeroOrMore().butAsFewAsPossible())
+            digit(ZeroOrMore.butAsFewAsPossible)
         }
 
         assertEquals("\\d*?", regex.toString())
@@ -2209,7 +2209,7 @@ class RegexBuilderDslTest {
     @Test
     fun testOneOrMoreButAsFewAsPossible() {
         val regex = regex {
-            digit(oneOrMore().butAsFewAsPossible())
+            digit(OneOrMore.butAsFewAsPossible)
         }
 
         assertEquals("\\d+?", regex.toString())
@@ -2240,7 +2240,7 @@ class RegexBuilderDslTest {
     @Test
     fun testAtLeastButAsFewAsPossible() {
         val regex = regex {
-            digit(atLeast(1).butAsFewAsPossible())
+            digit(AtLeast(1).butAsFewAsPossible)
         }
 
         assertEquals("\\d{1,}?", regex.toString())
@@ -2271,7 +2271,7 @@ class RegexBuilderDslTest {
     @Test
     fun testBetweenButAsFewAsPossible() {
         val regex = regex {
-            digit(between(2, 100).butAsFewAsPossible())
+            digit(Between(2, 100).butAsFewAsPossible)
         }
 
         assertEquals("\\d{2,100}?", regex.toString())
@@ -2302,7 +2302,7 @@ class RegexBuilderDslTest {
     @Test
     fun testNoMoreThanButAsFewAsPossible() {
         val regex = regex {
-            digit(noMoreThan(2).butAsFewAsPossible())
+            digit(NoMoreThan(2).butAsFewAsPossible)
         }
 
         assertEquals("\\d{0,2}?", regex.toString())
@@ -2331,9 +2331,9 @@ class RegexBuilderDslTest {
     }
 
     @Test
-    fun testNoneOrOneButAsFewAsPossible() {
+    fun testZeroOrOneButAsFewAsPossible() {
         val regex = regex {
-            digit(zeroOrOne().butAsFewAsPossible())
+            digit(ZeroOrOne.butAsFewAsPossible)
         }
 
         assertEquals("\\d??", regex.toString())
