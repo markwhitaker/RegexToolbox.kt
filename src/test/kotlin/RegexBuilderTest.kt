@@ -8,7 +8,6 @@ import uk.co.mainwave.regextoolboxkotlin.RegexBuilder
 import uk.co.mainwave.regextoolboxkotlin.RegexBuilderException
 import uk.co.mainwave.regextoolboxkotlin.RegexOptions.IGNORE_CASE
 import uk.co.mainwave.regextoolboxkotlin.RegexOptions.MULTILINE
-import uk.co.mainwave.regextoolboxkotlin.RegexQuantifier
 import uk.co.mainwave.regextoolboxkotlin.RegexQuantifier.AtLeast
 import uk.co.mainwave.regextoolboxkotlin.RegexQuantifier.Between
 import uk.co.mainwave.regextoolboxkotlin.RegexQuantifier.Exactly
