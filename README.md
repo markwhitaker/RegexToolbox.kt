@@ -5,13 +5,55 @@ Regular expression tools for Kotlin developers.
 
 ## RegexBuilder
 
-`RegexBuilder` is a class for building regular expressions in a more human-readable way using a fluent API. It offers a number of benefits over using raw regex syntax in strings:
+`RegexBuilder` is a class for building regular expressions in a more human-readable way using a lightweight, powerful API. It offers a lot of benefits over using raw regex syntax in strings:
 
  - No knowledge of regular expression syntax is required: just use simple, intuitively-named classes and methods.
  - Code is easier to read, understand and maintain.
  - Code is safer and far less prone to regular expression syntax errors and programmer errors.
 
 It is fully documented in the [project wiki](https://github.com/markwhitaker/RegexToolbox.kt/wiki).
+
+## New in version 2.0
+
+### New builder syntax
+
+Version 2.0 introduces a simplified [type-safe builder syntax](https://kotlinlang.org/docs/reference/type-safe-builders.html) for cleaner, less error-prone and more Kotliny code. Go from this:
+
+```kotlin
+val regex = RegexBuilder()
+    .startGroup()
+    .text()
+    .digit()
+    .buildRegex() // ERROR: forgot to call endGroup()
+```
+
+to this:
+
+```kotlin
+val regex = regex {
+    group {
+        text()
+        digit()
+    } // Yay! Can't forget to close the group
+} // Yay! No need to call buildRegex()
+```
+
+The old syntax is still supported if that's your preference (and for consistency with the sibling projects listed at the bottom of the page).
+
+### Quantifiers
+
+`RegexQuantifier` is now a sealed class and its methods have become objects or classes. The old syntax is still supported but deprecated and will be removed in a future version.
+
+|Old syntax|becomes|
+|---|---|
+|`RegexQuantifier.zeroOrOne()`|`RegexQuantifier.ZeroOrOne`|
+|`RegexQuantifier.zeroOrMore()`|`RegexQuantifier.ZeroOrMore`|
+|`RegexQuantifier.oneOrMore()`|`RegexQuantifier.OneOrMore`|
+|`RegexQuantifier.exactly(1)`|`RegexQuantifier.Exactly(1)`|
+|`RegexQuantifier.atLeast(1)`|`RegexQuantifier.AtLeast(1)`|
+|`RegexQuantifier.noMoreThan(1)`|`RegexQuantifier.NoMoreThan(1)`|
+|`RegexQuantifier.between(1,2)`|`RegexQuantifier.Between(1,2)`|
+|`[quantifier].butAsFewAsPossible()`|`[quantifier].butAsFewAsPossible`|
 
 ## Usage (Gradle)
 
