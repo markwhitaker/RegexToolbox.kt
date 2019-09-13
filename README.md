@@ -3,11 +3,12 @@
 
 Regular expression tools for Kotlin developers.
 
-## RegexBuilder
+## Regular expressions made easy
 
-`RegexBuilder` is a class for building regular expressions in a more human-readable way using a lightweight, powerful API. It offers a lot of benefits over using raw regex syntax in strings:
+RegexToolbox allows you to build regular expressions in a more human-readable way using a lightweight, powerful API.
+It offers a lot of benefits over using raw regex syntax in strings:
 
- - No knowledge of regular expression syntax is required: just use simple, intuitively-named classes and methods.
+ - No knowledge of regular expression syntax is required: just use simple, intuitively-named classes, methods and functions.
  - Code is easier to read, understand and maintain.
  - Code is safer and far less prone to regular expression syntax errors and programmer errors.
 

@@ -1,7 +1,7 @@
 package uk.co.mainwave.regextoolboxkotlin
 
 /**
- * Options that can be passed to [RegexBuilder.buildRegex].
+ * Options that can be passed to [regex], [pattern] and [RegexBuilder.buildRegex].
  */
 enum class RegexOptions(
     internal val kotlinRegexOption: RegexOption
