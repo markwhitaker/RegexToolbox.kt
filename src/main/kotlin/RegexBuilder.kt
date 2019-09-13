@@ -5,7 +5,7 @@ import java.util.regex.Pattern
 /**
  * Class to build regular expressions in a more human-readable way using a fluent API.
  * <p>
- * To build a regex, use the `regex {}` builder function.
+ * To build a regex, use the [regex] builder function.
  * <p>
  * Example:
  * <pre>
