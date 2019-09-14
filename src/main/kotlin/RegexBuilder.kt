@@ -180,52 +180,52 @@ class RegexBuilder {
     fun nonDigit(quantifier: RegexQuantifier? = null) = append("\\D", quantifier)
 
     /**
-     * Add an element to match any letter in the Roman alphabet (a-z, A-Z)
+     * Add an element to match any Unicode letter.
      *
      * @param quantifier Quantifier to apply to this element
      * @return The current [RegexBuilder] object, for method chaining
      */
-    fun letter(quantifier: RegexQuantifier? = null) = append("[a-zA-Z]", quantifier)
+    fun letter(quantifier: RegexQuantifier? = null) = append("\\p{L}", quantifier)
 
     /**
-     * Add an element to match any character that is not a letter in the Roman alphabet (a-z, A-Z)
+     * Add an element to match any character that is not a Unicode letter.
      *
      * @param quantifier Quantifier to apply to this element
      * @return The current [RegexBuilder] object, for method chaining
      */
-    fun nonLetter(quantifier: RegexQuantifier? = null) = append("[^a-zA-Z]", quantifier)
+    fun nonLetter(quantifier: RegexQuantifier? = null) = append("\\P{L}", quantifier)
 
     /**
-     * Add an element to match any upper-case letter in the Roman alphabet (A-Z).
+     * Add an element to match any upper-case Unicode letter.
      *
      * @param quantifier Quantifier to apply to this element
      * @return The current [RegexBuilder] object, for method chaining
      */
-    fun uppercaseLetter(quantifier: RegexQuantifier? = null) = append("[A-Z]", quantifier)
+    fun uppercaseLetter(quantifier: RegexQuantifier? = null) = append("\\p{Lu}", quantifier)
 
     /**
-     * Add an element to match any lowercase letter in the Roman alphabet (a-z)
+     * Add an element to match any lowercase Unicode letter.
      *
      * @param quantifier Quantifier to apply to this element
      * @return The current [RegexBuilder] object, for method chaining
      */
-    fun lowercaseLetter(quantifier: RegexQuantifier? = null) = append("[a-z]", quantifier)
+    fun lowercaseLetter(quantifier: RegexQuantifier? = null) = append("\\p{Ll}", quantifier)
 
     /**
-     * Add an element to match any letter in the Roman alphabet or decimal digit (a-z, A-Z, 0-9)
+     * Add an element to match any Unicode letter or decimal digit.
      *
      * @param quantifier Quantifier to apply to this element
      * @return The current [RegexBuilder] object, for method chaining
      */
-    fun letterOrDigit(quantifier: RegexQuantifier? = null) = append("[a-zA-Z0-9]", quantifier)
+    fun letterOrDigit(quantifier: RegexQuantifier? = null) = append("[\\p{L}0-9]", quantifier)
 
     /**
-     * Add an element to match any character that is not letter in the Roman alphabet or a decimal digit (a-z, A-Z, 0-9)
+     * Add an element to match any character that is not a Unicode letter or a decimal digit.
      *
      * @param quantifier Quantifier to apply to this element
      * @return The current [RegexBuilder] object, for method chaining
      */
-    fun nonLetterOrDigit(quantifier: RegexQuantifier? = null) = append("[^a-zA-Z0-9]", quantifier)
+    fun nonLetterOrDigit(quantifier: RegexQuantifier? = null) = append("[^\\p{L}0-9]", quantifier)
 
     /**
      * Add an element to match any hexadecimal digit (a-f, A-F, 0-9)

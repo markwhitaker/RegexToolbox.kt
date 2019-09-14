@@ -558,7 +558,7 @@ class RegexBuilderDslTest {
             letter()
         }
 
-        assertEquals("[a-zA-Z]", regex.toString())
+        assertEquals("\\p{L}", regex.toString())
         assertTrue(regex.containsMatchIn("a"))
         assertTrue(regex.containsMatchIn("A"))
         assertTrue(regex.containsMatchIn("        z"))
@@ -594,7 +594,7 @@ class RegexBuilderDslTest {
             nonLetter()
         }
 
-        assertEquals("[^a-zA-Z]", regex.toString())
+        assertEquals("\\P{L}", regex.toString())
         assertTrue(regex.containsMatchIn(" 1"))
         assertTrue(regex.containsMatchIn("0"))
         assertTrue(regex.containsMatchIn("999_"))
@@ -630,7 +630,7 @@ class RegexBuilderDslTest {
             uppercaseLetter()
         }
 
-        assertEquals("[A-Z]", regex.toString())
+        assertEquals("\\p{Lu}", regex.toString())
         assertTrue(regex.containsMatchIn("A"))
         assertTrue(regex.containsMatchIn("        Z"))
         assertTrue(regex.containsMatchIn("text with Spaces"))
@@ -666,7 +666,7 @@ class RegexBuilderDslTest {
             lowercaseLetter()
         }
 
-        assertEquals("[a-z]", regex.toString())
+        assertEquals("\\p{Ll}", regex.toString())
         assertTrue(regex.containsMatchIn("a"))
         assertTrue(regex.containsMatchIn("        z"))
         assertTrue(regex.containsMatchIn("text with Spaces"))
@@ -702,7 +702,7 @@ class RegexBuilderDslTest {
             letterOrDigit()
         }
 
-        assertEquals("[a-zA-Z0-9]", regex.toString())
+        assertEquals("[\\p{L}0-9]", regex.toString())
         assertTrue(regex.containsMatchIn("A"))
         assertTrue(regex.containsMatchIn("        Z"))
         assertTrue(regex.containsMatchIn("text with Spaces"))
@@ -739,7 +739,7 @@ class RegexBuilderDslTest {
             nonLetterOrDigit()
         }
 
-        assertEquals("[^a-zA-Z0-9]", regex.toString())
+        assertEquals("[^\\p{L}0-9]", regex.toString())
         assertFalse(regex.containsMatchIn("A"))
         assertTrue(regex.containsMatchIn("        Z"))
         assertTrue(regex.containsMatchIn("text with Spaces"))
@@ -1419,7 +1419,7 @@ class RegexBuilderDslTest {
             }
         }
 
-        assertEquals(".*([a-zA-Z]\\d)", regex.toString())
+        assertEquals(".*(\\p{L}\\d)", regex.toString())
 
         var match = regex.find("Class A1")
         assertNotNull(match)
@@ -1468,7 +1468,7 @@ class RegexBuilderDslTest {
             }
         }
 
-        assertEquals("([a-zA-Z]\\d)", regex.toString())
+        assertEquals("(\\p{L}\\d)", regex.toString())
 
         var matcher = regex.find("Class A1 f2 ZZ88")
         val matches = mutableListOf<String>()
@@ -1511,7 +1511,7 @@ class RegexBuilderDslTest {
             lowercaseLetter(OneOrMore)
         }
 
-        assertEquals("[a-z]+(?<test123>\\d+)[a-z]+", regex.toString())
+        assertEquals("\\p{Ll}+(?<test123>\\d+)\\p{Ll}+", regex.toString())
 
         val match = regex.find("a99z")
         assertNotNull(match)
@@ -1549,7 +1549,7 @@ class RegexBuilderDslTest {
             lowercaseLetter(OneOrMore)
         }
 
-        assertEquals("[a-z]+(?:\\d+)[a-z]+", regex.toString())
+        assertEquals("\\p{Ll}+(?:\\d+)\\p{Ll}+", regex.toString())
 
         val match = regex.find("a99z")
         assertNotNull(match)
@@ -1588,7 +1588,7 @@ class RegexBuilderDslTest {
             }
         }
 
-        assertEquals("(.*)([a-zA-Z]\\d)", regex.toString())
+        assertEquals("(.*)(\\p{L}\\d)", regex.toString())
 
         var match = regex.find("Class A1")
         assertNotNull(match)
@@ -1644,7 +1644,7 @@ class RegexBuilderDslTest {
             }
         }
 
-        assertEquals(".(.*([a-zA-Z]\\d))", regex.toString())
+        assertEquals(".(.*(\\p{L}\\d))", regex.toString())
 
         var match = regex.find("Class A1")
         assertNotNull(match)
@@ -1695,7 +1695,7 @@ class RegexBuilderDslTest {
             letter()
         }
 
-        assertEquals("[a-zA-Z]\\d*[a-zA-Z]", regex.toString())
+        assertEquals("\\p{L}\\d*\\p{L}", regex.toString())
         assertTrue(regex.containsMatchIn("ab"))
         assertTrue(regex.containsMatchIn("a1b"))
         assertTrue(regex.containsMatchIn("a123b"))
@@ -1732,7 +1732,7 @@ class RegexBuilderDslTest {
             letter()
         }
 
-        assertEquals("[a-zA-Z]\\d+[a-zA-Z]", regex.toString())
+        assertEquals("\\p{L}\\d+\\p{L}", regex.toString())
         assertFalse(regex.containsMatchIn("ab"))
         assertTrue(regex.containsMatchIn("a1b"))
         assertTrue(regex.containsMatchIn("a123b"))
@@ -1769,7 +1769,7 @@ class RegexBuilderDslTest {
             letter()
         }
 
-        assertEquals("[a-zA-Z]\\d?[a-zA-Z]", regex.toString())
+        assertEquals("\\p{L}\\d?\\p{L}", regex.toString())
         assertTrue(regex.containsMatchIn("ab"))
         assertTrue(regex.containsMatchIn("a1b"))
         assertFalse(regex.containsMatchIn("a123b"))
@@ -1806,7 +1806,7 @@ class RegexBuilderDslTest {
             letter()
         }
 
-        assertEquals("[a-zA-Z]\\d{3}[a-zA-Z]", regex.toString())
+        assertEquals("\\p{L}\\d{3}\\p{L}", regex.toString())
         assertFalse(regex.containsMatchIn("ab"))
         assertFalse(regex.containsMatchIn("a1b"))
         assertFalse(regex.containsMatchIn("a12b"))
@@ -1846,7 +1846,7 @@ class RegexBuilderDslTest {
             letter()
         }
 
-        assertEquals("[a-zA-Z]\\d{3,}[a-zA-Z]", regex.toString())
+        assertEquals("\\p{L}\\d{3,}\\p{L}", regex.toString())
         assertFalse(regex.containsMatchIn("ab"))
         assertFalse(regex.containsMatchIn("a1b"))
         assertFalse(regex.containsMatchIn("a12b"))
@@ -1886,7 +1886,7 @@ class RegexBuilderDslTest {
             letter()
         }
 
-        assertEquals("[a-zA-Z]\\d{0,3}[a-zA-Z]", regex.toString())
+        assertEquals("\\p{L}\\d{0,3}\\p{L}", regex.toString())
         assertTrue(regex.containsMatchIn("ab"))
         assertTrue(regex.containsMatchIn("a1b"))
         assertTrue(regex.containsMatchIn("a12b"))
@@ -1926,7 +1926,7 @@ class RegexBuilderDslTest {
             letter()
         }
 
-        assertEquals("[a-zA-Z]\\d{2,4}[a-zA-Z]", regex.toString())
+        assertEquals("\\p{L}\\d{2,4}\\p{L}", regex.toString())
         assertFalse(regex.containsMatchIn("ab"))
         assertFalse(regex.containsMatchIn("a1b"))
         assertTrue(regex.containsMatchIn("a12b"))
