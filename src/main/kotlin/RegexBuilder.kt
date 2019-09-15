@@ -260,21 +260,20 @@ class RegexBuilder {
     fun nonHexDigit(quantifier: RegexQuantifier? = null) = append("[^0-9A-Fa-f]", quantifier)
 
     /**
-     * Add an element to match any Roman alphabet letter, decimal digit, or underscore (a-z, A-Z, 0-9, _)
+     * Add an element to match any Unicode letter, decimal digit or underscore
      *
      * @param quantifier Quantifier to apply to this element
      * @return The current [RegexBuilder] object, for method chaining
      */
-    fun wordCharacter(quantifier: RegexQuantifier? = null) = append("\\w", quantifier)
+    fun wordCharacter(quantifier: RegexQuantifier? = null) = append("[\\p{L}0-9_]", quantifier)
 
     /**
-     * Add an element to match any character that is not a Roman alphabet letter, decimal digit, or underscore
-     * (a-z, A-Z, 0-9, _)
+     * Add an element to match any character that is not a Unicode letter, decimal digit or underscore
      *
      * @param quantifier Quantifier to apply to this element
      * @return The current [RegexBuilder] object, for method chaining
      */
-    fun nonWordCharacter(quantifier: RegexQuantifier? = null) = append("\\W", quantifier)
+    fun nonWordCharacter(quantifier: RegexQuantifier? = null) = append("[^\\p{L}0-9_]", quantifier)
 
     /**
      * Add an element (a character class) to match any of the characters provided.

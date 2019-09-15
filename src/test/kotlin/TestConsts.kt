@@ -1,7 +1,10 @@
 // Character classes
-const val BOTH_CASE_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
-const val UPPER_CASE_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-const val LOWER_CASE_ALPHABET = "abcdefghijklmnopqrstuvwxyz"
+const val BOTH_CASE_LATIN_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+const val UPPER_CASE_LATIN_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+const val LOWER_CASE_LATIN_ALPHABET = "abcdefghijklmnopqrstuvwxyz"
+const val BOTH_CASE_EXTENDED_ALPHABET = "ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞẞĀĂĄĆĈĊČĎĐĒĔĖĘĚĜĞĠĢĤĦĨĪĬĮİĴĶĹĻĽĿŁŃŅŇŊŌŎŐŒŔŖŘŚŜŞŠŢŤŦŨŪŬŮŰŲŴŶŸŹŻŽàáâãäåæçèéêëìíîïðñòóôõöøùúûüýþßāăąćĉċčďđēĕėęěĝğġģĥħĩīĭįiĵķĺļľŀłńņňŋōŏőœŕŗřśŝşšţťŧũūŭůűųŵŷÿźżž"
+const val UPPER_CASE_EXTENDED_ALPHABET = "ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞẞĀĂĄĆĈĊČĎĐĒĔĖĘĚĜĞĠĢĤĦĨĪĬĮİĴĶĹĻĽĿŁŃŅŇŊŌŎŐŒŔŖŘŚŜŞŠŢŤŦŨŪŬŮŰŲŴŶŸŹŻŽ"
+const val LOWER_CASE_EXTENDED_ALPHABET = "àáâãäåæçèéêëìíîïðñòóôõöøùúûüýþßāăąćĉċčďđēĕėęěĝğġģĥħĩīĭįiĵķĺļľŀłńņňŋōŏőœŕŗřśŝşšţťŧũūŭůűųŵŷÿźżž"
 const val DECIMAL_DIGITS = "0123456789"
 const val BOTH_CASE_HEX_DIGITS = "0123456789ABCDEFabcdef"
 const val UPPER_CASE_HEX_DIGITS = "0123456789ABCDEF"
