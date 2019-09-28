@@ -454,8 +454,11 @@ class RegexBuilder {
         stringBuilder.append(quantifier?.toString() ?: "")
 
     private fun makeSafeForCharacterClass(text: String): String {
-        // Replace ] with \]
-        var safeText = text.replace("]", "\\]")
+        var safeText = text
+            // Replace ] with \]
+            .replace("]", "\\]")
+            // Replace - with \-
+            .replace("-", "\\-")
 
         // replace ^ with \^ if it occurs at the start of the string
         if (safeText.startsWith("^")) {

@@ -4,6 +4,7 @@ import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import uk.co.mainwave.regextoolboxkotlin.RegexBuilder
 import uk.co.mainwave.regextoolboxkotlin.RegexOptions.IGNORE_CASE
 import uk.co.mainwave.regextoolboxkotlin.RegexOptions.MULTILINE
 import uk.co.mainwave.regextoolboxkotlin.RegexQuantifier.AtLeast
@@ -1152,6 +1153,19 @@ class RegexBuilderDslTest {
     }
 
     @Test
+    fun testAnyCharacterFromWithHyphen() {
+        val regex = regex {
+            anyCharacterFrom("a-f")
+        }
+
+        assertEquals("[a\\-f]", regex.toString())
+        assertTrue(regex.containsMatchIn("a"))
+        assertTrue(regex.containsMatchIn("-"))
+        assertTrue(regex.containsMatchIn("f"))
+        assertFalse(regex.containsMatchIn("c"))
+    }
+
+    @Test
     fun testAnyCharacterFromWithCaretNotAtStart() {
         val regex = regex {
             anyCharacterFrom("a^bc")
@@ -2246,10 +2260,10 @@ class RegexBuilderDslTest {
             text("s", ZeroOrOne)
             text("://")
             nonWhitespace(OneOrMore)
-            anyCharacterFrom("a-zA-Z0-9_/") // Valid last characters
+            anyCharacterFrom("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_/") // Valid last characters
         }
 
-        assertEquals("http(?:s)?://\\S+[a-zA-Z0-9_/]", regex.toString())
+        assertEquals("http(?:s)?://\\S+[abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_/]", regex.toString())
         assertTrue(regex.containsMatchIn("http://www.mainwave.co.uk"))
         assertTrue(regex.containsMatchIn("https://www.mainwave.co.uk"))
         assertFalse(regex.containsMatchIn("www.mainwave.co.uk"))
