@@ -543,7 +543,7 @@ class RegexBuilder {
         stringBuilder
             .append(part)
             .append(quantifier?.toString() ?: "")
-        return this;
+        return this
     }
 
     private fun addPartInNonCapturingGroup(
@@ -554,9 +554,6 @@ class RegexBuilder {
     private fun log(method: String, message: String) {
         logFunction("$prefix: $method: $message")
     }
-
-    private fun addQuantifier(quantifier: RegexQuantifier?) =
-        stringBuilder.append(quantifier?.toString() ?: "")
 
     private fun makeSafeForCharacterClass(text: String): String {
         var safeText = text
