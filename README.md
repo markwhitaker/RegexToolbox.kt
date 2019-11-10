@@ -14,7 +14,49 @@ It offers a lot of benefits over using raw regex syntax in strings:
 
 It is fully documented in the [project wiki](https://github.com/markwhitaker/RegexToolbox.kt/wiki).
 
-## New in version 2.0
+## New in 2.2
+
+### Logging
+
+Use the new `addLogger()` method to connect a logger of your choice and see how your regex is built, step by step. For example:
+
+```kotlin
+val regex = RegexBuilder()
+    .addLogger {
+        println(it)
+    }
+    .wordBoundary()
+    .text("Regex")
+    .anyOf("Builder", "Toolbox")
+    .wordBoundary()
+    .buildRegex()
+```
+
+or this:
+
+```kotlin
+val regex = regex {
+    addLogger {
+        println(it)
+    }
+    wordBoundary()
+    text("Regex")
+    anyOf("Builder", "Toolbox")
+    wordBoundary()
+}
+```
+
+will output this to your console:
+
+```text
+RegexBuilder: wordBoundary(): \b
+RegexBuilder: text("Regex"): Regex
+RegexBuilder: anyOf("Builder", "Toolbox"): (?:Builder|Toolbox)
+RegexBuilder: wordBoundary(): \b
+RegexBuilder: buildRegex(): \bRegex(?:Builder|Toolbox)\b
+```
+
+## New in 2.0
 
 ### New builder syntax
 
@@ -55,46 +97,6 @@ The old syntax is still supported if that's your preference (and for consistency
 |`RegexQuantifier.noMoreThan(1)`|`RegexQuantifier.NoMoreThan(1)`|
 |`RegexQuantifier.between(1,2)`|`RegexQuantifier.Between(1,2)`|
 |`[quantifier].butAsFewAsPossible()`|`[quantifier].butAsFewAsPossible`|
-
-## New in 2.2: Logging
-
-Use the new `addLogger()` method to connect a logger of your choice and see how your regex is built, step by step. For example:
-
-```kotlin
-val regex = RegexBuilder()
-    .addLogger {
-        println(it)
-    }
-    .wordBoundary()
-    .text("Regex")
-    .anyOf("Builder", "Toolbox")
-    .wordBoundary()
-    .buildRegex()
-```
-
-or this:
-
-```kotlin
-val regex = regex {
-    addLogger {
-        println(it)
-    }
-    wordBoundary()
-    text("Regex")
-    anyOf("Builder", "Toolbox")
-    wordBoundary()
-}
-```
-
-will output this to your console:
-
-```text
-RegexBuilder: wordBoundary(): \b
-RegexBuilder: text("Regex"): Regex
-RegexBuilder: anyOf("Builder", "Toolbox"): (?:Builder|Toolbox)
-RegexBuilder: wordBoundary(): \b
-RegexBuilder: buildRegex(): \bRegex(?:Builder|Toolbox)\b
-```
 
 ## Usage (Gradle)
 
