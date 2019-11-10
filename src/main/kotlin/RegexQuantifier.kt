@@ -89,12 +89,12 @@ sealed class RegexQuantifier(
         override val butAsFewAsPossible: RegexQuantifier = LazyBetween(minimum, maximum)
     }
 
-    private object LazyZeroOrMore : RegexQuantifier("ZeroOrMore.butAsFewAsPossible()", "*?")
-    private object LazyOneOrMore : RegexQuantifier("OneOrMore.butAsFewAsPossible()", "+?")
-    private object LazyZeroOrOne : RegexQuantifier("ZeroOrOne.butAsFewAsPossible()", "??")
-    private class LazyAtLeast(minimum: Int) : RegexQuantifier("AtLeast($minimum).butAsFewAsPossible()", "{$minimum,}?")
-    private class LazyNoMoreThan(maximum: Int) : RegexQuantifier("NoMoreThan($maximum).butAsFewAsPossible()", "{0,$maximum}?")
-    private class LazyBetween(minimum: Int, maximum: Int) : RegexQuantifier("Between($minimum, $maximum).butAsFewAsPossible()", "{$minimum,$maximum}?")
+    private object LazyZeroOrMore : RegexQuantifier("ZeroOrMore.butAsFewAsPossible", "*?")
+    private object LazyOneOrMore : RegexQuantifier("OneOrMore.butAsFewAsPossible", "+?")
+    private object LazyZeroOrOne : RegexQuantifier("ZeroOrOne.butAsFewAsPossible", "??")
+    private class LazyAtLeast(minimum: Int) : RegexQuantifier("AtLeast($minimum).butAsFewAsPossible", "{$minimum,}?")
+    private class LazyNoMoreThan(maximum: Int) : RegexQuantifier("NoMoreThan($maximum).butAsFewAsPossible", "{0,$maximum}?")
+    private class LazyBetween(minimum: Int, maximum: Int) : RegexQuantifier("Between($minimum, $maximum).butAsFewAsPossible", "{$minimum,$maximum}?")
 
     companion object {
         @Deprecated(

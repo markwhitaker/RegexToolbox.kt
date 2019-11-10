@@ -43,8 +43,10 @@ class RegexBuilder {
     fun buildRegex(vararg options: RegexOptions): Regex =
         when (openGroupCount) {
             0 -> {
+                val stringBuilt = stringBuilder.toString()
+                log("buildRegex()", stringBuilt)
                 val regex = Regex(
-                    stringBuilder.toString(),
+                    stringBuilt,
                     options.map { it.kotlinRegexOption }.toSet()
                 )
                 stringBuilder.setLength(0)
@@ -91,7 +93,7 @@ class RegexBuilder {
     }
 
     /**
-     * Attach a [logger] to this builder using the provided log function. The builder will emit logging messages to it
+     * Attach a logger to this builder using the provided log function. The builder will emit logging messages to it
      * as the regex is built with the prefix "RegexBuilder".
      */
     fun addLogger(logFunction: (s: String) -> Unit): RegexBuilder {
@@ -100,7 +102,7 @@ class RegexBuilder {
     }
 
     /**
-     * Attach a [logger] to this builder using the provided log function. The builder will emit logging messages to it
+     * Attach a logger to this builder using the provided log function. The builder will emit logging messages to it
      * as the regex is built with the provided [prefix].
      */
     fun addLogger(prefix: String, logFunction: (s: String) -> Unit): RegexBuilder {
@@ -129,7 +131,7 @@ class RegexBuilder {
         return if (quantifier == null) {
             addPart("text(\"$text\")", safeText)
         } else {
-            addPartInNonCapturingGroup("text(\"$text, ${quantifier.name}\")", safeText, quantifier)
+            addPartInNonCapturingGroup("text(\"$text\", ${quantifier.name})", safeText, quantifier)
         }
     }
 
@@ -154,7 +156,7 @@ class RegexBuilder {
         if (quantifier == null) {
             addPart("regexText(\"$text\")", text)
         } else {
-            addPartInNonCapturingGroup("regexText(\"$text, ${quantifier.name}\")", text, quantifier)
+            addPartInNonCapturingGroup("regexText(\"$text\", ${quantifier.name})", text, quantifier)
         }
 
     /**
@@ -164,7 +166,7 @@ class RegexBuilder {
      * @return The current [RegexBuilder] object, for method chaining
      */
     fun anyCharacter(quantifier: RegexQuantifier? = null) =
-        addPart("anyCharacter(${quantifier?.name})", ".", quantifier)
+        addPart("anyCharacter(${nameOf(quantifier)})", ".", quantifier)
 
     /**
      * Add an element to match any single whitespace character.
@@ -173,7 +175,7 @@ class RegexBuilder {
      * @return The current [RegexBuilder] object, for method chaining
      */
     fun whitespace(quantifier: RegexQuantifier? = null) =
-        addPart("whitespace(${quantifier?.name})", "\\s", quantifier)
+        addPart("whitespace(${nameOf(quantifier)})", "\\s", quantifier)
 
     /**
      * Add an element to match any single non-whitespace character.
@@ -182,7 +184,7 @@ class RegexBuilder {
      * @return The current [RegexBuilder] object, for method chaining
      */
     fun nonWhitespace(quantifier: RegexQuantifier? = null) =
-        addPart("nonWhitespace(${quantifier?.name})", "\\S", quantifier)
+        addPart("nonWhitespace(${nameOf(quantifier)})", "\\S", quantifier)
 
     /**
      * Add an element to represent any amount of white space, including none. This is just a convenient alias for
@@ -199,7 +201,7 @@ class RegexBuilder {
      * @return The current [RegexBuilder] object, for method chaining
      */
     fun space(quantifier: RegexQuantifier? = null) =
-        addPart("space(${quantifier?.name})", " ", quantifier)
+        addPart("space(${nameOf(quantifier)})", " ", quantifier)
 
     /**
      * Add an element to match a single tab character.
@@ -208,7 +210,7 @@ class RegexBuilder {
      * @return The current [RegexBuilder] object, for method chaining
      */
     fun tab(quantifier: RegexQuantifier? = null) =
-        addPart("tab(${quantifier?.name})", "\\t", quantifier)
+        addPart("tab(${nameOf(quantifier)})", "\\t", quantifier)
 
     /**
      * Add an element to match a single line feed character.
@@ -217,7 +219,7 @@ class RegexBuilder {
      * @return The current [RegexBuilder] object, for method chaining
      */
     fun lineFeed(quantifier: RegexQuantifier? = null) =
-        addPart("lineFeed(${quantifier?.name})", "\\n", quantifier)
+        addPart("lineFeed(${nameOf(quantifier)})", "\\n", quantifier)
 
     /**
      * Add an element to match a single carriage return character.
@@ -226,7 +228,7 @@ class RegexBuilder {
      * @return The current [RegexBuilder] object, for method chaining
      */
     fun carriageReturn(quantifier: RegexQuantifier? = null) =
-        addPart("carriageReturn(${quantifier?.name})", "\\r", quantifier)
+        addPart("carriageReturn(${nameOf(quantifier)})", "\\r", quantifier)
 
     /**
      * Add an element to match any single decimal digit (0-9).
@@ -235,7 +237,7 @@ class RegexBuilder {
      * @return The current [RegexBuilder] object, for method chaining
      */
     fun digit(quantifier: RegexQuantifier? = null) =
-        addPart("digit(${quantifier?.name})", "\\d", quantifier)
+        addPart("digit(${nameOf(quantifier)})", "\\d", quantifier)
 
     /**
      * Add an element to match any character that is not a decimal digit (0-9).
@@ -244,7 +246,7 @@ class RegexBuilder {
      * @return The current [RegexBuilder] object, for method chaining
      */
     fun nonDigit(quantifier: RegexQuantifier? = null) =
-        addPart("nonDigit(${quantifier?.name})", "\\D", quantifier)
+        addPart("nonDigit(${nameOf(quantifier)})", "\\D", quantifier)
 
     /**
      * Add an element to match any Unicode letter.
@@ -253,7 +255,7 @@ class RegexBuilder {
      * @return The current [RegexBuilder] object, for method chaining
      */
     fun letter(quantifier: RegexQuantifier? = null) =
-        addPart("letter(${quantifier?.name})", "\\p{L}", quantifier)
+        addPart("letter(${nameOf(quantifier)})", "\\p{L}", quantifier)
 
     /**
      * Add an element to match any character that is not a Unicode letter.
@@ -262,7 +264,7 @@ class RegexBuilder {
      * @return The current [RegexBuilder] object, for method chaining
      */
     fun nonLetter(quantifier: RegexQuantifier? = null) =
-        addPart("nonLetter(${quantifier?.name})", "\\P{L}", quantifier)
+        addPart("nonLetter(${nameOf(quantifier)})", "\\P{L}", quantifier)
 
     /**
      * Add an element to match any upper-case Unicode letter.
@@ -271,7 +273,7 @@ class RegexBuilder {
      * @return The current [RegexBuilder] object, for method chaining
      */
     fun uppercaseLetter(quantifier: RegexQuantifier? = null) =
-        addPart("uppercaseLetter(${quantifier?.name})", "\\p{Lu}", quantifier)
+        addPart("uppercaseLetter(${nameOf(quantifier)})", "\\p{Lu}", quantifier)
 
     /**
      * Add an element to match any lowercase Unicode letter.
@@ -280,7 +282,7 @@ class RegexBuilder {
      * @return The current [RegexBuilder] object, for method chaining
      */
     fun lowercaseLetter(quantifier: RegexQuantifier? = null) =
-        addPart("lowercaseLetter(${quantifier?.name})", "\\p{Ll}", quantifier)
+        addPart("lowercaseLetter(${nameOf(quantifier)})", "\\p{Ll}", quantifier)
 
     /**
      * Add an element to match any Unicode letter or decimal digit.
@@ -289,7 +291,7 @@ class RegexBuilder {
      * @return The current [RegexBuilder] object, for method chaining
      */
     fun letterOrDigit(quantifier: RegexQuantifier? = null) =
-        addPart("letterOrDigit(${quantifier?.name})", "[\\p{L}0-9]", quantifier)
+        addPart("letterOrDigit(${nameOf(quantifier)})", "[\\p{L}0-9]", quantifier)
 
     /**
      * Add an element to match any character that is not a Unicode letter or a decimal digit.
@@ -298,7 +300,7 @@ class RegexBuilder {
      * @return The current [RegexBuilder] object, for method chaining
      */
     fun nonLetterOrDigit(quantifier: RegexQuantifier? = null) =
-        addPart("nonLetterOrDigit(${quantifier?.name})", "[^\\p{L}0-9]", quantifier)
+        addPart("nonLetterOrDigit(${nameOf(quantifier)})", "[^\\p{L}0-9]", quantifier)
 
     /**
      * Add an element to match any hexadecimal digit (a-f, A-F, 0-9)
@@ -307,7 +309,7 @@ class RegexBuilder {
      * @return The current [RegexBuilder] object, for method chaining
      */
     fun hexDigit(quantifier: RegexQuantifier? = null) =
-        addPart("hexDigit(${quantifier?.name})", "[0-9A-Fa-f]", quantifier)
+        addPart("hexDigit(${nameOf(quantifier)})", "[0-9A-Fa-f]", quantifier)
 
     /**
      * Add an element to match any uppercase hexadecimal digit (A-F, 0-9)
@@ -316,7 +318,7 @@ class RegexBuilder {
      * @return The current [RegexBuilder] object, for method chaining
      */
     fun uppercaseHexDigit(quantifier: RegexQuantifier? = null) =
-        addPart("uppercaseHexDigit(${quantifier?.name})", "[0-9A-F]", quantifier)
+        addPart("uppercaseHexDigit(${nameOf(quantifier)})", "[0-9A-F]", quantifier)
 
     /**
      * Add an element to match any lowercase hexadecimal digit (a-f, 0-9)
@@ -325,7 +327,7 @@ class RegexBuilder {
      * @return The current [RegexBuilder] object, for method chaining
      */
     fun lowercaseHexDigit(quantifier: RegexQuantifier? = null) =
-        addPart("lowercaseHexDigit(${quantifier?.name})", "[0-9a-f]", quantifier)
+        addPart("lowercaseHexDigit(${nameOf(quantifier)})", "[0-9a-f]", quantifier)
 
     /**
      * Add an element to match any character that is not a hexadecimal digit (a-f, A-F, 0-9)
@@ -334,7 +336,7 @@ class RegexBuilder {
      * @return The current [RegexBuilder] object, for method chaining
      */
     fun nonHexDigit(quantifier: RegexQuantifier? = null) =
-        addPart("nonHexDigit(${quantifier?.name})", "[^0-9A-Fa-f]", quantifier)
+        addPart("nonHexDigit(${nameOf(quantifier)})", "[^0-9A-Fa-f]", quantifier)
 
     /**
      * Add an element to match any Unicode letter, decimal digit or underscore
@@ -343,7 +345,7 @@ class RegexBuilder {
      * @return The current [RegexBuilder] object, for method chaining
      */
     fun wordCharacter(quantifier: RegexQuantifier? = null) =
-        addPart("wordCharacter(${quantifier?.name})", "[\\p{L}0-9_]", quantifier)
+        addPart("wordCharacter(${nameOf(quantifier)})", "[\\p{L}0-9_]", quantifier)
 
     /**
      * Add an element to match any character that is not a Unicode letter, decimal digit or underscore
@@ -352,7 +354,7 @@ class RegexBuilder {
      * @return The current [RegexBuilder] object, for method chaining
      */
     fun nonWordCharacter(quantifier: RegexQuantifier? = null) =
-        addPart("nonWordCharacter(${quantifier?.name})", "[^\\p{L}0-9_]", quantifier)
+        addPart("nonWordCharacter(${nameOf(quantifier)})", "[^\\p{L}0-9_]", quantifier)
 
     /**
      * Add an element (a character class) to match any of the characters provided.
@@ -399,7 +401,7 @@ class RegexBuilder {
      */
     fun anyOf(strings: List<String>, quantifier: RegexQuantifier? = null): RegexBuilder {
         return if (strings.isEmpty()) {
-            log("AnyOf()", "strings list is empty, so doing nothing")
+            log("anyOf()", "strings list is empty, so doing nothing")
             this
         } else if (strings.size == 1 && quantifier == null) {
             addPart("anyOf(\"${strings.first()}\")", makeSafeForRegex(strings.first()))
@@ -522,7 +524,7 @@ class RegexBuilder {
         }
 
         openGroupCount--
-        return addPart("endGroup(${quantifier?.name})", ")", quantifier)
+        return addPart("endGroup(${nameOf(quantifier)})", ")", quantifier)
     }
 
     // GROUPS (DSL)
@@ -539,7 +541,8 @@ class RegexBuilder {
     // PRIVATE METHODS
 
     private fun addPart(method: String, part: String, quantifier: RegexQuantifier? = null): RegexBuilder {
-        log(method, "$part$quantifier")
+        val quantifierString = quantifier?.toString() ?: ""
+        log(method, "$part$quantifierString")
         stringBuilder
             .append(part)
             .append(quantifier?.toString() ?: "")
@@ -588,6 +591,8 @@ class RegexBuilder {
             .replace("}", "\\}")
             .replace("|", "\\|")
     }
+
+    private fun nameOf(quantifier: RegexQuantifier?) = quantifier?.name ?: ""
 
     companion object {
         private const val DEFAULT_PREFIX = "RegexBuilder"
