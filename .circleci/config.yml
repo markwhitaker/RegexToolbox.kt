@@ -32,7 +32,7 @@ jobs:
     steps:
       - checkout
       - *load-cache
-      - run: gradle dependencies --stacktrace
+      - run: gradle dependencies
       - *save-cache
       # Build the library and run tests
       - run: gradle build
