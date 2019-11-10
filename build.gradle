@@ -1,5 +1,6 @@
 buildscript {
     ext.junit_version = '4.12'
+    ext.mockk_version = '1.9.3.kotlin12'
 }
 
 plugins {
@@ -24,6 +25,7 @@ sourceCompatibility = 1.8
 dependencies {
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
     testImplementation "junit:junit:$junit_version"
+    testImplementation "io.mockk:mockk:$mockk_version"
 }
 
 compileKotlin {
