@@ -65,7 +65,7 @@ Version 2.0 introduces a simplified [type-safe builder syntax](https://kotlinlan
 ```kotlin
 val regex = RegexBuilder()
     .startGroup()
-    .text()
+    .letter()
     .digit()
     .buildRegex() // ERROR: forgot to call endGroup()
 ```
@@ -75,7 +75,7 @@ to this:
 ```kotlin
 val regex = regex {
     group {
-        text()
+        letter()
         digit()
     } // Yay! Can't forget to close the group
 } // Yay! No need to call buildRegex()
