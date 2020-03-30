@@ -1,10 +1,10 @@
+package uk.co.mainwave.regextoolboxkotlin
+
 import io.mockk.mockk
 import io.mockk.verify
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
-import uk.co.mainwave.regextoolboxkotlin.RegexBuilder
-import uk.co.mainwave.regextoolboxkotlin.RegexOptions
 import uk.co.mainwave.regextoolboxkotlin.RegexQuantifier
 
 class RegexBuilderLoggingTest {
