@@ -1,11 +1,11 @@
+package uk.co.mainwave.regextoolboxkotlin
+
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import uk.co.mainwave.regextoolboxkotlin.RegexBuilder
-import uk.co.mainwave.regextoolboxkotlin.RegexBuilderException
 import uk.co.mainwave.regextoolboxkotlin.RegexOptions.IGNORE_CASE
 import uk.co.mainwave.regextoolboxkotlin.RegexOptions.MULTILINE
 import uk.co.mainwave.regextoolboxkotlin.RegexQuantifier.AtLeast

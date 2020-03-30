@@ -1,3 +1,5 @@
+package uk.co.mainwave.regextoolboxkotlin
+
 // Character classes
 const val BOTH_CASE_LATIN_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
 const val UPPER_CASE_LATIN_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"

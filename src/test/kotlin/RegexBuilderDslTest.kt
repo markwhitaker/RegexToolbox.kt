@@ -1,10 +1,11 @@
+package uk.co.mainwave.regextoolboxkotlin
+
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import uk.co.mainwave.regextoolboxkotlin.RegexBuilder
 import uk.co.mainwave.regextoolboxkotlin.RegexOptions.IGNORE_CASE
 import uk.co.mainwave.regextoolboxkotlin.RegexOptions.MULTILINE
 import uk.co.mainwave.regextoolboxkotlin.RegexQuantifier.AtLeast
@@ -14,8 +15,6 @@ import uk.co.mainwave.regextoolboxkotlin.RegexQuantifier.NoMoreThan
 import uk.co.mainwave.regextoolboxkotlin.RegexQuantifier.OneOrMore
 import uk.co.mainwave.regextoolboxkotlin.RegexQuantifier.ZeroOrMore
 import uk.co.mainwave.regextoolboxkotlin.RegexQuantifier.ZeroOrOne
-import uk.co.mainwave.regextoolboxkotlin.pattern
-import uk.co.mainwave.regextoolboxkotlin.regex
 import java.util.regex.Pattern
 
 class RegexBuilderDslTest {
