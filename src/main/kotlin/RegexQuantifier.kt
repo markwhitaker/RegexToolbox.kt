@@ -11,15 +11,6 @@ sealed class RegexQuantifier(
 
     interface Greedy {
         val butAsFewAsPossible: RegexQuantifier
-
-        @Deprecated(
-            message = "Replace with butAsFewAsPossible",
-            replaceWith = ReplaceWith(
-                "butAsFewAsPossible",
-                "uk.co.mainwave.regextoolboxkotlin.RegexQuantifier"
-            )
-        )
-        fun butAsFewAsPossible() = butAsFewAsPossible
     }
 
     /**
@@ -95,78 +86,4 @@ sealed class RegexQuantifier(
     private class LazyAtLeast(minimum: Int) : RegexQuantifier("AtLeast($minimum).butAsFewAsPossible", "{$minimum,}?")
     private class LazyNoMoreThan(maximum: Int) : RegexQuantifier("NoMoreThan($maximum).butAsFewAsPossible", "{0,$maximum}?")
     private class LazyBetween(minimum: Int, maximum: Int) : RegexQuantifier("Between($minimum, $maximum).butAsFewAsPossible", "{$minimum,$maximum}?")
-
-    companion object {
-        @Deprecated(
-            message = "Replace with ZeroOrOne",
-            replaceWith = ReplaceWith(
-                "ZeroOrOne",
-                "uk.co.mainwave.regextoolboxkotlin.RegexQuantifier.ZeroOrOne"
-            )
-        )
-        fun oneOrNone() = ZeroOrOne
-
-        @Deprecated(
-            message = "Replace with ZeroOrOne",
-            replaceWith = ReplaceWith(
-                "ZeroOrOne",
-                "uk.co.mainwave.regextoolboxkotlin.RegexQuantifier.ZeroOrOne"
-            )
-        )
-        fun zeroOrOne() = ZeroOrOne
-
-        @Deprecated(
-            message = "Replace with ZeroOrMore",
-            replaceWith = ReplaceWith(
-                "ZeroOrMore",
-                "uk.co.mainwave.regextoolboxkotlin.RegexQuantifier.ZeroOrMore"
-            )
-        )
-        fun zeroOrMore() = ZeroOrMore
-
-        @Deprecated(
-            message = "Replace with OneOrMore",
-            replaceWith = ReplaceWith(
-                "OneOrMore",
-                "uk.co.mainwave.regextoolboxkotlin.RegexQuantifier.OneOrMore"
-            )
-        )
-        fun oneOrMore() = OneOrMore
-
-        @Deprecated(
-            message = "Replace with Exactly",
-            replaceWith = ReplaceWith(
-                "Exactly(times)",
-                "uk.co.mainwave.regextoolboxkotlin.RegexQuantifier.Exactly"
-            )
-        )
-        fun exactly(times: Int) = Exactly(times)
-
-        @Deprecated(
-            message = "Replace with AtLeast",
-            replaceWith = ReplaceWith(
-                "AtLeast(minimum)",
-                "uk.co.mainwave.regextoolboxkotlin.RegexQuantifier.AtLeast"
-            )
-        )
-        fun atLeast(minimum: Int) = AtLeast(minimum)
-
-        @Deprecated(
-            message = "Replace with NoMoreThan",
-            replaceWith = ReplaceWith(
-                "NoMoreThan(maximum)",
-                "uk.co.mainwave.regextoolboxkotlin.RegexQuantifier.NoMoreThan"
-            )
-        )
-        fun noMoreThan(maximum: Int) = NoMoreThan(maximum)
-
-        @Deprecated(
-            message = "Replace with Between",
-            replaceWith = ReplaceWith(
-                "Between(minimum, maximum)",
-                "uk.co.mainwave.regextoolboxkotlin.RegexQuantifier.Between"
-            )
-        )
-        fun between(minimum: Int, maximum: Int) = Between(minimum, maximum)
-    }
 }
