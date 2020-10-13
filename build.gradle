@@ -1,6 +1,6 @@
 buildscript {
-    ext.junit_version = '4.12'
-    ext.mockk_version = '1.9.3.kotlin12'
+    ext.junit_version = '4.13.1'
+    ext.mockk_version = '1.10.2'
 }
 
 plugins {
