@@ -37,16 +37,6 @@ jobs:
       # Build the library and run tests
       - run: gradle build
 
-  deploy-to-bintray:
-    <<: *setup-environment
-    steps:
-      - checkout
-      - *load-cache
-      - run: gradle dependencies
-      - *save-cache
-      # Deploy to bintray
-      - run: gradle bintrayUpload
-
 workflows:
   version: 2
   build-and-deploy:
@@ -55,12 +45,3 @@ workflows:
           filters:
             tags:
               only: /.*/
-      - deploy-to-bintray:
-          requires:
-            - build
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              # Only tags beginning x.y.z
-              only: /^\d+\.\d+\.\d+.*$/

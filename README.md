@@ -1,5 +1,6 @@
 ![icon](artwork/RegexToolbox-icon-100.png)
-# RegexToolbox.kt [![CircleCI](https://circleci.com/gh/markwhitaker/RegexToolbox.kt.svg?style=shield)](https://circleci.com/gh/markwhitaker/RegexToolbox.kt) [![Download](https://api.bintray.com/packages/markwhitaker/Maven/regextoolbox-kotlin/images/download.svg) ](https://bintray.com/markwhitaker/Maven/regextoolbox-kotlin/_latestVersion)
+# RegexToolbox.kt [![CircleCI](https://circleci.com/gh/markwhitaker/RegexToolbox.kt.svg?style=shield)](https://circleci.com/gh/markwhitaker/RegexToolbox.kt) [![Download from JitPack](https://jitpack.io/v/markwhitaker/RegexToolbox.kt.svg)](https://jitpack.io/#markwhitaker/RegexToolbox.kt)
+
 
 Regular expression tools for Kotlin developers.
 
@@ -100,9 +101,17 @@ The old syntax is still supported if that's your preference (and for consistency
 
 ## Usage (Gradle)
 
-Replace `x.y.z` with the latest version.
+RegexToolbox.kt is [hosted on JitPack](https://jitpack.io/#markwhitaker/RegexToolbox.kt).
+Replace `x.y.z` with the latest version (shown in the JitPack badge at the top of this page).
 
-```implementation 'uk.co.mainwave.regextoolbox:regextoolbox-kotlin:x.y.z'```
+```
+repositories {
+    ...
+    maven { url 'https://jitpack.io' }
+}
+
+implementation 'com.github.markwhitaker:RegexToolbox.kt:x.y.z'
+```
 
 ---
 ![icon](https://raw.githubusercontent.com/markwhitaker/RegexToolbox.Java/master/artwork/RegexToolbox-icon-32.png) **Java developer?** Check out the Java version of this library, [RegexToolbox.Java](https://github.com/markwhitaker/RegexToolbox.Java).
