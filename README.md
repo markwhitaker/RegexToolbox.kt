@@ -15,63 +15,22 @@ It offers a lot of benefits over using raw regex syntax in strings:
 
 It is fully documented in the [project wiki](https://github.com/markwhitaker/RegexToolbox.kt/wiki).
 
-## New in 2.2
+## Breaking changes in 3.0
 
-### Logging
+All `RegexBuilder` features that were deprecated in version 2.4 have been removed in 3.0.
 
-Use the new `addLogger()` method to connect a logger of your choice and see how your regex is built, step by step. For example:
+|Removed|Replaced with|
+|---|---|
+|`RegexBuilder()` public constructor|`regex { ... }`|
+|`buildRegex()`|`regex { ... }`|
+|`buildPattern()`|`pattern { ... }`|
+|`startGroup() ... endGroup()`|`group { ... }`|
+|`startNamedGroup() ... endGroup()`|`namedGroup { ... }`|
+|`startNonCapturingGroup() ... endGroup()`|`nonCapturingGroup { ... }`|
+|`addLogger()`|No replacement: logging has been removed.|
 
-```kotlin
-val regex = RegexBuilder()
-    .addLogger {
-        println(it)
-    }
-    .wordBoundary()
-    .text("Regex")
-    .anyOf("Builder", "Toolbox")
-    .wordBoundary()
-    .buildRegex()
-```
-
-or this:
-
-```kotlin
-val regex = regex {
-    addLogger {
-        println(it)
-    }
-    wordBoundary()
-    text("Regex")
-    anyOf("Builder", "Toolbox")
-    wordBoundary()
-}
-```
-
-will output this to your console:
-
-```text
-RegexBuilder: wordBoundary(): \b
-RegexBuilder: text("Regex"): Regex
-RegexBuilder: anyOf("Builder", "Toolbox"): (?:Builder|Toolbox)
-RegexBuilder: wordBoundary(): \b
-RegexBuilder: buildRegex(): \bRegex(?:Builder|Toolbox)\b
-```
-
-## New in 2.0
-
-### New builder syntax
-
-Version 2.0 introduces a simplified [type-safe builder syntax](https://kotlinlang.org/docs/reference/type-safe-builders.html) for cleaner, less error-prone and more Kotliny code. Go from this:
-
-```kotlin
-val regex = RegexBuilder()
-    .startGroup()
-    .letter()
-    .digit()
-    .buildRegex() // ERROR: forgot to call endGroup()
-```
-
-to this:
+In a nutshell: the old Java-style is completed removed in 3.0.
+RegexToolbox.kt now exclusively uses the new [type-safe builder syntax](https://kotlinlang.org/docs/reference/type-safe-builders.html) introduced in 2.0, for example:
 
 ```kotlin
 val regex = regex {
@@ -81,23 +40,6 @@ val regex = regex {
     } // Yay! Can't forget to close the group
 } // Yay! No need to call buildRegex()
 ```
-
-The old syntax is still supported if that's your preference (and for consistency with the sibling projects listed at the bottom of the page).
-
-### Quantifiers
-
-`RegexQuantifier` is now a sealed class and its methods have become objects or classes. The old syntax is still supported but deprecated and will be removed in a future version.
-
-|Old syntax|becomes|
-|---|---|
-|`RegexQuantifier.zeroOrOne()`|`RegexQuantifier.ZeroOrOne`|
-|`RegexQuantifier.zeroOrMore()`|`RegexQuantifier.ZeroOrMore`|
-|`RegexQuantifier.oneOrMore()`|`RegexQuantifier.OneOrMore`|
-|`RegexQuantifier.exactly(1)`|`RegexQuantifier.Exactly(1)`|
-|`RegexQuantifier.atLeast(1)`|`RegexQuantifier.AtLeast(1)`|
-|`RegexQuantifier.noMoreThan(1)`|`RegexQuantifier.NoMoreThan(1)`|
-|`RegexQuantifier.between(1,2)`|`RegexQuantifier.Between(1,2)`|
-|`[quantifier].butAsFewAsPossible()`|`[quantifier].butAsFewAsPossible`|
 
 ## Usage (Gradle)
 

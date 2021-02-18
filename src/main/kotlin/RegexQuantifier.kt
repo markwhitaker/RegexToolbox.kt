@@ -4,7 +4,6 @@ package uk.co.mainwave.regextoolboxkotlin
  * Quantifiers that can be applied to regex elements or groups
  */
 sealed class RegexQuantifier(
-    internal val name: String,
     private val regexString: String
 ) {
     override fun toString() = regexString
@@ -18,7 +17,7 @@ sealed class RegexQuantifier(
      *
      * @return A greedy quantifier: use [butAsFewAsPossible] to make it lazy
      */
-    object ZeroOrMore : RegexQuantifier("ZeroOrMore", "*"), Greedy {
+    object ZeroOrMore : RegexQuantifier("*"), Greedy {
         override val butAsFewAsPossible: RegexQuantifier = LazyZeroOrMore
     }
 
@@ -27,7 +26,7 @@ sealed class RegexQuantifier(
      *
      * @return A greedy quantifier: use [butAsFewAsPossible] to make it lazy
      */
-    object OneOrMore : RegexQuantifier("OneOrMore", "+"), Greedy {
+    object OneOrMore : RegexQuantifier("+"), Greedy {
         override val butAsFewAsPossible: RegexQuantifier = LazyOneOrMore
     }
 
@@ -36,7 +35,7 @@ sealed class RegexQuantifier(
      *
      * @return A greedy quantifier: use [butAsFewAsPossible] to make it lazy
      */
-    object ZeroOrOne : RegexQuantifier("ZeroOrOne", "?"), Greedy {
+    object ZeroOrOne : RegexQuantifier("?"), Greedy {
         override val butAsFewAsPossible: RegexQuantifier = LazyZeroOrOne
     }
 
@@ -47,7 +46,7 @@ sealed class RegexQuantifier(
      * @return A quantifier that is neither lazy nor greedy: it will match the exact number of element occurrences
      * specified
      */
-    class Exactly(times: Int) : RegexQuantifier("Exactly($times)", "{$times}")
+    class Exactly(times: Int) : RegexQuantifier("{$times}")
 
     /**
      * Quantifier to match at least a minimum number of occurrences of the preceding element
@@ -55,7 +54,7 @@ sealed class RegexQuantifier(
      * @param minimum The minimum number of occurrences to match
      * @return A greedy quantifier: use [butAsFewAsPossible] to make it lazy
      */
-    class AtLeast(minimum: Int) : RegexQuantifier("AtLeast($minimum)", "{$minimum,}"), Greedy {
+    class AtLeast(minimum: Int) : RegexQuantifier("{$minimum,}"), Greedy {
         override val butAsFewAsPossible: RegexQuantifier = LazyAtLeast(minimum)
     }
 
@@ -65,7 +64,7 @@ sealed class RegexQuantifier(
      * @param maximum The maximum number of occurrences to match
      * @return A greedy quantifier: use [butAsFewAsPossible] to make it lazy
      */
-    class NoMoreThan(maximum: Int) : RegexQuantifier("NoMoreThan($maximum)", "{0,$maximum}"), Greedy {
+    class NoMoreThan(maximum: Int) : RegexQuantifier("{0,$maximum}"), Greedy {
         override val butAsFewAsPossible: RegexQuantifier = LazyNoMoreThan(maximum)
     }
 
@@ -76,14 +75,14 @@ sealed class RegexQuantifier(
      * @param maximum The maximum number of occurrences to match
      * @return A greedy quantifier: use [butAsFewAsPossible] to make it lazy
      */
-    class Between(minimum: Int, maximum: Int) : RegexQuantifier("Between($minimum, $maximum)", "{$minimum,$maximum}"), Greedy {
+    class Between(minimum: Int, maximum: Int) : RegexQuantifier("{$minimum,$maximum}"), Greedy {
         override val butAsFewAsPossible: RegexQuantifier = LazyBetween(minimum, maximum)
     }
 
-    private object LazyZeroOrMore : RegexQuantifier("ZeroOrMore.butAsFewAsPossible", "*?")
-    private object LazyOneOrMore : RegexQuantifier("OneOrMore.butAsFewAsPossible", "+?")
-    private object LazyZeroOrOne : RegexQuantifier("ZeroOrOne.butAsFewAsPossible", "??")
-    private class LazyAtLeast(minimum: Int) : RegexQuantifier("AtLeast($minimum).butAsFewAsPossible", "{$minimum,}?")
-    private class LazyNoMoreThan(maximum: Int) : RegexQuantifier("NoMoreThan($maximum).butAsFewAsPossible", "{0,$maximum}?")
-    private class LazyBetween(minimum: Int, maximum: Int) : RegexQuantifier("Between($minimum, $maximum).butAsFewAsPossible", "{$minimum,$maximum}?")
+    private object LazyZeroOrMore : RegexQuantifier("*?")
+    private object LazyOneOrMore : RegexQuantifier("+?")
+    private object LazyZeroOrOne : RegexQuantifier("??")
+    private class LazyAtLeast(minimum: Int) : RegexQuantifier("{$minimum,}?")
+    private class LazyNoMoreThan(maximum: Int) : RegexQuantifier("{0,$maximum}?")
+    private class LazyBetween(minimum: Int, maximum: Int) : RegexQuantifier("{$minimum,$maximum}?")
 }
