@@ -24,10 +24,12 @@ class RegexBuilder {
     /**
      * Interface to a logger attached by the client code which will receive log messages as the regex is built.
      */
+    @Deprecated("Logging will be removed in version 3.0")
     interface Logger {
         /**
          * Log a [message] to a debugger or logging framework
          */
+        @Deprecated("Logging will be removed in version 3.0")
         fun log(message: String)
     }
 
@@ -76,6 +78,7 @@ class RegexBuilder {
      * Attach a [logger] to this builder using this [Logger] interface. The builder will emit logging messages to it as
      * the regex is built with the prefix "RegexBuilder".
      */
+    @Deprecated("Logging will be removed in version 3.0")
     fun addLogger(logger: Logger): RegexBuilder {
         return addLogger{
             logger.log(it)
@@ -86,6 +89,7 @@ class RegexBuilder {
      * Attach a [logger] to this builder using this [Logger] interface. The builder will emit logging messages to it as
      * the regex is built with the provided [prefix].
      */
+    @Deprecated("Logging will be removed in version 3.0")
     fun addLogger(prefix: String, logger: Logger): RegexBuilder {
         return addLogger(prefix) {
             logger.log(it)
@@ -96,6 +100,7 @@ class RegexBuilder {
      * Attach a logger to this builder using the provided log function. The builder will emit logging messages to it
      * as the regex is built with the prefix "RegexBuilder".
      */
+    @Deprecated("Logging will be removed in version 3.0")
     fun addLogger(logFunction: (s: String) -> Unit): RegexBuilder {
         this.logFunction = logFunction
         return this
@@ -105,6 +110,7 @@ class RegexBuilder {
      * Attach a logger to this builder using the provided log function. The builder will emit logging messages to it
      * as the regex is built with the provided [prefix].
      */
+    @Deprecated("Logging will be removed in version 3.0")
     fun addLogger(prefix: String, logFunction: (s: String) -> Unit): RegexBuilder {
         this.logFunction = logFunction
         this.prefix = prefix
