@@ -15,109 +15,8 @@ import java.util.regex.Pattern
  * }
  * </pre>
  */
-class RegexBuilder @Deprecated("The old syntax will be removed in version 3.0: please use the new syntax") constructor() {
+class RegexBuilder internal constructor() {
     private val stringBuilder = StringBuilder()
-    private var openGroupCount = 0
-    private var logFunction: (s: String) -> Unit = {}
-    private var prefix = DEFAULT_PREFIX
-
-    /**
-     * Interface to a logger attached by the client code which will receive log messages as the regex is built.
-     */
-    @Deprecated("Logging will be removed in version 3.0")
-    interface Logger {
-        /**
-         * Log a [message] to a debugger or logging framework
-         */
-        @Deprecated("Logging will be removed in version 3.0")
-        fun log(message: String)
-    }
-
-    /**
-     * Build and return a [Regex] object from the current builder state.
-     * After calling this the builder is cleared and ready to re-use.
-     *
-     * @param options Any number of regex options to apply to the regex
-     * @return [Regex] as built
-     * @throws RegexBuilderException An error occurred when building the regex
-     */
-    @Throws(RegexBuilderException::class)
-    @Deprecated("The old syntax will be removed in version 3.0: please use regex")
-    fun buildRegex(vararg options: RegexOptions): Regex =
-        when (openGroupCount) {
-            0 -> {
-                val stringBuilt = stringBuilder.toString()
-                log("buildRegex()", stringBuilt)
-                val regex = Regex(
-                    stringBuilt,
-                    options.map { it.kotlinRegexOption }.toSet()
-                )
-                stringBuilder.setLength(0)
-                regex
-            }
-            1 -> {
-                throw RegexBuilderException("A group has been started but not ended", stringBuilder)
-            }
-            else -> {
-                throw RegexBuilderException("$openGroupCount groups have been started but not ended", stringBuilder)
-            }
-        }
-
-    /**
-     * Build and return a [Pattern] object from the current builder state.
-     * Note that the normal Kotlin thing to do is to use [buildRegex], but this is for legacy cases where you need a Pattern.
-     * After calling this the builder is cleared and ready to re-use.
-     *
-     * @param options Any number of regex options to apply to the regex
-     * @return [Regex] as built
-     * @throws RegexBuilderException An error occurred when building the regex
-     */
-    @Throws(RegexBuilderException::class)
-    @Deprecated("The old syntax will be removed in version 3.0: please use pattern")
-    fun buildPattern(vararg options: RegexOptions): Pattern = buildRegex(*options).toPattern()
-
-    /**
-     * Attach a [logger] to this builder using this [Logger] interface. The builder will emit logging messages to it as
-     * the regex is built with the prefix "RegexBuilder".
-     */
-    @Deprecated("Logging will be removed in version 3.0")
-    fun addLogger(logger: Logger): RegexBuilder {
-        return addLogger{
-            logger.log(it)
-        }
-    }
-
-    /**
-     * Attach a [logger] to this builder using this [Logger] interface. The builder will emit logging messages to it as
-     * the regex is built with the provided [prefix].
-     */
-    @Deprecated("Logging will be removed in version 3.0")
-    fun addLogger(prefix: String, logger: Logger): RegexBuilder {
-        return addLogger(prefix) {
-            logger.log(it)
-        }
-    }
-
-    /**
-     * Attach a logger to this builder using the provided log function. The builder will emit logging messages to it
-     * as the regex is built with the prefix "RegexBuilder".
-     */
-    @Deprecated("Logging will be removed in version 3.0")
-    fun addLogger(logFunction: (s: String) -> Unit): RegexBuilder {
-        this.logFunction = logFunction
-        return this
-    }
-
-    /**
-     * Attach a logger to this builder using the provided log function. The builder will emit logging messages to it
-     * as the regex is built with the provided [prefix].
-     */
-    @Deprecated("Logging will be removed in version 3.0")
-    fun addLogger(prefix: String, logFunction: (s: String) -> Unit): RegexBuilder {
-        this.logFunction = logFunction
-        this.prefix = prefix
-        return this
-    }
 
     /**
      * Add text to the regex. Any regex special characters will be escaped as necessary
@@ -137,12 +36,11 @@ class RegexBuilder @Deprecated("The old syntax will be removed in version 3.0: p
     fun text(text: String, quantifier: RegexQuantifier? = null): RegexBuilder {
         val safeText = makeSafeForRegex(text)
         return if (quantifier == null) {
-            addPart("text(\"$text\")", safeText)
+            addPart(safeText)
         } else {
-            addPartInNonCapturingGroup("text(\"$text\", ${quantifier.name})", safeText, quantifier)
+            addPartInNonCapturingGroup(safeText, quantifier)
         }
     }
-
 
     /**
      * Add literal regex text to the regex. Regex special characters will NOT be escaped.
@@ -162,9 +60,9 @@ class RegexBuilder @Deprecated("The old syntax will be removed in version 3.0: p
      */
     fun regexText(text: String, quantifier: RegexQuantifier? = null): RegexBuilder =
         if (quantifier == null) {
-            addPart("regexText(\"$text\")", text)
+            addPart(text)
         } else {
-            addPartInNonCapturingGroup("regexText(\"$text\", ${quantifier.name})", text, quantifier)
+            addPartInNonCapturingGroup(text, quantifier)
         }
 
     /**
@@ -174,7 +72,7 @@ class RegexBuilder @Deprecated("The old syntax will be removed in version 3.0: p
      * @return The current [RegexBuilder] object, for method chaining
      */
     fun anyCharacter(quantifier: RegexQuantifier? = null) =
-        addPart("anyCharacter(${nameOf(quantifier)})", ".", quantifier)
+        addPart(".", quantifier)
 
     /**
      * Add an element to match any single whitespace character.
@@ -183,7 +81,7 @@ class RegexBuilder @Deprecated("The old syntax will be removed in version 3.0: p
      * @return The current [RegexBuilder] object, for method chaining
      */
     fun whitespace(quantifier: RegexQuantifier? = null) =
-        addPart("whitespace(${nameOf(quantifier)})", "\\s", quantifier)
+        addPart("\\s", quantifier)
 
     /**
      * Add an element to match any single non-whitespace character.
@@ -192,14 +90,14 @@ class RegexBuilder @Deprecated("The old syntax will be removed in version 3.0: p
      * @return The current [RegexBuilder] object, for method chaining
      */
     fun nonWhitespace(quantifier: RegexQuantifier? = null) =
-        addPart("nonWhitespace(${nameOf(quantifier)})", "\\S", quantifier)
+        addPart("\\S", quantifier)
 
     /**
      * Add an element to represent any amount of white space, including none. This is just a convenient alias for
      * `whitespace(RegexQuantifier.zeroOrMore())`.
      */
     fun possibleWhitespace() =
-        addPart("possibleWhitespace()", "\\s", RegexQuantifier.ZeroOrMore)
+        addPart("\\s", RegexQuantifier.ZeroOrMore)
 
     /**
      * Add an element to match a single space character. If you want to match any kind of white space, use
@@ -209,7 +107,7 @@ class RegexBuilder @Deprecated("The old syntax will be removed in version 3.0: p
      * @return The current [RegexBuilder] object, for method chaining
      */
     fun space(quantifier: RegexQuantifier? = null) =
-        addPart("space(${nameOf(quantifier)})", " ", quantifier)
+        addPart(" ", quantifier)
 
     /**
      * Add an element to match a single tab character.
@@ -218,7 +116,7 @@ class RegexBuilder @Deprecated("The old syntax will be removed in version 3.0: p
      * @return The current [RegexBuilder] object, for method chaining
      */
     fun tab(quantifier: RegexQuantifier? = null) =
-        addPart("tab(${nameOf(quantifier)})", "\\t", quantifier)
+        addPart("\\t", quantifier)
 
     /**
      * Add an element to match a single line feed character.
@@ -227,7 +125,7 @@ class RegexBuilder @Deprecated("The old syntax will be removed in version 3.0: p
      * @return The current [RegexBuilder] object, for method chaining
      */
     fun lineFeed(quantifier: RegexQuantifier? = null) =
-        addPart("lineFeed(${nameOf(quantifier)})", "\\n", quantifier)
+        addPart("\\n", quantifier)
 
     /**
      * Add an element to match a single carriage return character.
@@ -236,7 +134,7 @@ class RegexBuilder @Deprecated("The old syntax will be removed in version 3.0: p
      * @return The current [RegexBuilder] object, for method chaining
      */
     fun carriageReturn(quantifier: RegexQuantifier? = null) =
-        addPart("carriageReturn(${nameOf(quantifier)})", "\\r", quantifier)
+        addPart("\\r", quantifier)
 
     /**
      * Add an element to match any single decimal digit (0-9).
@@ -245,7 +143,7 @@ class RegexBuilder @Deprecated("The old syntax will be removed in version 3.0: p
      * @return The current [RegexBuilder] object, for method chaining
      */
     fun digit(quantifier: RegexQuantifier? = null) =
-        addPart("digit(${nameOf(quantifier)})", "\\d", quantifier)
+        addPart("\\d", quantifier)
 
     /**
      * Add an element to match any character that is not a decimal digit (0-9).
@@ -254,7 +152,7 @@ class RegexBuilder @Deprecated("The old syntax will be removed in version 3.0: p
      * @return The current [RegexBuilder] object, for method chaining
      */
     fun nonDigit(quantifier: RegexQuantifier? = null) =
-        addPart("nonDigit(${nameOf(quantifier)})", "\\D", quantifier)
+        addPart("\\D", quantifier)
 
     /**
      * Add an element to match any Unicode letter.
@@ -263,7 +161,7 @@ class RegexBuilder @Deprecated("The old syntax will be removed in version 3.0: p
      * @return The current [RegexBuilder] object, for method chaining
      */
     fun letter(quantifier: RegexQuantifier? = null) =
-        addPart("letter(${nameOf(quantifier)})", "\\p{L}", quantifier)
+        addPart("\\p{L}", quantifier)
 
     /**
      * Add an element to match any character that is not a Unicode letter.
@@ -272,7 +170,7 @@ class RegexBuilder @Deprecated("The old syntax will be removed in version 3.0: p
      * @return The current [RegexBuilder] object, for method chaining
      */
     fun nonLetter(quantifier: RegexQuantifier? = null) =
-        addPart("nonLetter(${nameOf(quantifier)})", "\\P{L}", quantifier)
+        addPart("\\P{L}", quantifier)
 
     /**
      * Add an element to match any upper-case Unicode letter.
@@ -281,7 +179,7 @@ class RegexBuilder @Deprecated("The old syntax will be removed in version 3.0: p
      * @return The current [RegexBuilder] object, for method chaining
      */
     fun uppercaseLetter(quantifier: RegexQuantifier? = null) =
-        addPart("uppercaseLetter(${nameOf(quantifier)})", "\\p{Lu}", quantifier)
+        addPart("\\p{Lu}", quantifier)
 
     /**
      * Add an element to match any lowercase Unicode letter.
@@ -290,7 +188,7 @@ class RegexBuilder @Deprecated("The old syntax will be removed in version 3.0: p
      * @return The current [RegexBuilder] object, for method chaining
      */
     fun lowercaseLetter(quantifier: RegexQuantifier? = null) =
-        addPart("lowercaseLetter(${nameOf(quantifier)})", "\\p{Ll}", quantifier)
+        addPart("\\p{Ll}", quantifier)
 
     /**
      * Add an element to match any Unicode letter or decimal digit.
@@ -299,7 +197,7 @@ class RegexBuilder @Deprecated("The old syntax will be removed in version 3.0: p
      * @return The current [RegexBuilder] object, for method chaining
      */
     fun letterOrDigit(quantifier: RegexQuantifier? = null) =
-        addPart("letterOrDigit(${nameOf(quantifier)})", "[\\p{L}0-9]", quantifier)
+        addPart("[\\p{L}0-9]", quantifier)
 
     /**
      * Add an element to match any character that is not a Unicode letter or a decimal digit.
@@ -308,7 +206,7 @@ class RegexBuilder @Deprecated("The old syntax will be removed in version 3.0: p
      * @return The current [RegexBuilder] object, for method chaining
      */
     fun nonLetterOrDigit(quantifier: RegexQuantifier? = null) =
-        addPart("nonLetterOrDigit(${nameOf(quantifier)})", "[^\\p{L}0-9]", quantifier)
+        addPart("[^\\p{L}0-9]", quantifier)
 
     /**
      * Add an element to match any hexadecimal digit (a-f, A-F, 0-9)
@@ -317,7 +215,7 @@ class RegexBuilder @Deprecated("The old syntax will be removed in version 3.0: p
      * @return The current [RegexBuilder] object, for method chaining
      */
     fun hexDigit(quantifier: RegexQuantifier? = null) =
-        addPart("hexDigit(${nameOf(quantifier)})", "[0-9A-Fa-f]", quantifier)
+        addPart("[0-9A-Fa-f]", quantifier)
 
     /**
      * Add an element to match any uppercase hexadecimal digit (A-F, 0-9)
@@ -326,7 +224,7 @@ class RegexBuilder @Deprecated("The old syntax will be removed in version 3.0: p
      * @return The current [RegexBuilder] object, for method chaining
      */
     fun uppercaseHexDigit(quantifier: RegexQuantifier? = null) =
-        addPart("uppercaseHexDigit(${nameOf(quantifier)})", "[0-9A-F]", quantifier)
+        addPart("[0-9A-F]", quantifier)
 
     /**
      * Add an element to match any lowercase hexadecimal digit (a-f, 0-9)
@@ -335,7 +233,7 @@ class RegexBuilder @Deprecated("The old syntax will be removed in version 3.0: p
      * @return The current [RegexBuilder] object, for method chaining
      */
     fun lowercaseHexDigit(quantifier: RegexQuantifier? = null) =
-        addPart("lowercaseHexDigit(${nameOf(quantifier)})", "[0-9a-f]", quantifier)
+        addPart("[0-9a-f]", quantifier)
 
     /**
      * Add an element to match any character that is not a hexadecimal digit (a-f, A-F, 0-9)
@@ -344,7 +242,7 @@ class RegexBuilder @Deprecated("The old syntax will be removed in version 3.0: p
      * @return The current [RegexBuilder] object, for method chaining
      */
     fun nonHexDigit(quantifier: RegexQuantifier? = null) =
-        addPart("nonHexDigit(${nameOf(quantifier)})", "[^0-9A-Fa-f]", quantifier)
+        addPart("[^0-9A-Fa-f]", quantifier)
 
     /**
      * Add an element to match any Unicode letter, decimal digit or underscore
@@ -353,7 +251,7 @@ class RegexBuilder @Deprecated("The old syntax will be removed in version 3.0: p
      * @return The current [RegexBuilder] object, for method chaining
      */
     fun wordCharacter(quantifier: RegexQuantifier? = null) =
-        addPart("wordCharacter(${nameOf(quantifier)})", "[\\p{L}0-9_]", quantifier)
+        addPart("[\\p{L}0-9_]", quantifier)
 
     /**
      * Add an element to match any character that is not a Unicode letter, decimal digit or underscore
@@ -362,7 +260,7 @@ class RegexBuilder @Deprecated("The old syntax will be removed in version 3.0: p
      * @return The current [RegexBuilder] object, for method chaining
      */
     fun nonWordCharacter(quantifier: RegexQuantifier? = null) =
-        addPart("nonWordCharacter(${nameOf(quantifier)})", "[^\\p{L}0-9_]", quantifier)
+        addPart("[^\\p{L}0-9_]", quantifier)
 
     /**
      * Add an element (a character class) to match any of the characters provided.
@@ -372,14 +270,9 @@ class RegexBuilder @Deprecated("The old syntax will be removed in version 3.0: p
      * @return The current [RegexBuilder] object, for method chaining
      */
     fun anyCharacterFrom(characters: String, quantifier: RegexQuantifier? = null): RegexBuilder {
-        val method = if (quantifier == null) {
-            "anyCharacterFrom(\"$characters\")"
-        } else {
-            "anyCharacterFrom(\"$characters\", ${quantifier.name})"
-        }
         // Build a character class, remembering to escape any ] character if passed in
         val safeCharacters = makeSafeForCharacterClass(characters)
-        return addPart(method, "[$safeCharacters]", quantifier)
+        return addPart("[$safeCharacters]", quantifier)
     }
 
     /**
@@ -390,14 +283,9 @@ class RegexBuilder @Deprecated("The old syntax will be removed in version 3.0: p
      * @return The current [RegexBuilder] object, for method chaining
      */
     fun anyCharacterExcept(characters: String, quantifier: RegexQuantifier? = null): RegexBuilder {
-        val method = if (quantifier == null) {
-            "anyCharacterExcept(\"$characters\")"
-        } else {
-            "anyCharacterExcept(\"$characters\", ${quantifier.name})"
-        }
         // Build a character class, remembering to escape any ] character if passed in
         val safeCharacters = makeSafeForCharacterClass(characters)
-        return addPart(method, "[^$safeCharacters]", quantifier)
+        return addPart("[^$safeCharacters]", quantifier)
     }
 
     /**
@@ -408,24 +296,19 @@ class RegexBuilder @Deprecated("The old syntax will be removed in version 3.0: p
      * @return The current [RegexBuilder] object, for method chaining
      */
     fun anyOf(strings: List<String>, quantifier: RegexQuantifier? = null): RegexBuilder {
-        return if (strings.isEmpty()) {
-            log("anyOf()", "strings list is empty, so doing nothing")
-            this
-        } else if (strings.size == 1 && quantifier == null) {
-            addPart("anyOf(\"${strings.first()}\")", makeSafeForRegex(strings.first()))
-        } else {
-            val stringsJoinedForLogging = strings.joinToString(", ") {
-                "\"$it\""
+        return when {
+            strings.isEmpty() -> {
+                this
             }
-            val method = if (quantifier == null) {
-                "anyOf($stringsJoinedForLogging)"
-            } else {
-                "anyOf($stringsJoinedForLogging, ${quantifier.name})"
+            strings.size == 1 && quantifier == null -> {
+                addPart(makeSafeForRegex(strings.first()))
             }
-            val stringsSafeAndJoined = strings.joinToString("|") {
-                makeSafeForRegex(it)
+            else -> {
+                val stringsSafeAndJoined = strings.joinToString("|") {
+                    makeSafeForRegex(it)
+                }
+                addPartInNonCapturingGroup(stringsSafeAndJoined, quantifier)
             }
-            addPartInNonCapturingGroup(method, stringsSafeAndJoined, quantifier)
         }
     }
 
@@ -436,7 +319,8 @@ class RegexBuilder @Deprecated("The old syntax will be removed in version 3.0: p
      * @param quantifier Quantifier to apply to this element
      * @return The current [RegexBuilder] object, for method chaining
      */
-    fun anyOf(vararg strings: String, quantifier: RegexQuantifier? = null): RegexBuilder = anyOf(strings.toList(), quantifier)
+    fun anyOf(vararg strings: String, quantifier: RegexQuantifier? = null): RegexBuilder =
+        anyOf(strings.toList(), quantifier)
 
     // ZERO-WIDTH ASSERTIONS
 
@@ -445,14 +329,14 @@ class RegexBuilder @Deprecated("The old syntax will be removed in version 3.0: p
      *
      * @return The current [RegexBuilder] object, for method chaining
      */
-    fun startOfString() = addPart("startOfString()", "^")
+    fun startOfString() = addPart("^")
 
     /**
      * Add a zero-width anchor element to match the end of the string
      *
      * @return The current [RegexBuilder] object, for method chaining
      */
-    fun endOfString() = addPart("endOfString()", "$")
+    fun endOfString() = addPart("$")
 
     /**
      * Add a zero-width anchor element to match the boundary between an alphanumeric/underscore character
@@ -460,115 +344,84 @@ class RegexBuilder @Deprecated("The old syntax will be removed in version 3.0: p
      *
      * @return The current [RegexBuilder] object, for method chaining
      */
-    fun wordBoundary() = addPart("wordBoundary()", "\\b")
+    fun wordBoundary() = addPart("\\b")
 
     // GROUPS
 
     /**
-     * Start a capture group. Capture groups have two purposes: they group part of the expression so
-     * it can have quantifiers applied to it, and they capture the results of each group match and
-     * allow you to access them afterwards using [MatchResult.groups].
+     * Create a capture group. Capture groups have two purposes: they group part of the expression so it can have
+     * quantifiers applied to it, and they capture the results of each group match and allow you to access them
+     * afterwards using [MatchResult.groups].
      *
-     * If you don't want to capture the group match, use [startNonCapturingGroup].
-     *
-     * Note: all groups must be ended with [endGroup] before calling [buildRegex].
-     *
-     * @return The current [RegexBuilder] object, for method chaining
-     */
-    @Deprecated("The old syntax will be removed in version 3.0: please use group")
-    fun startGroup(): RegexBuilder {
-        openGroupCount++
-        return addPart("startGroup()", "(")
-    }
-
-    /**
-     * Start a non-capturing group. Non-capturing groups group part of the expression so
-     * it can have quantifiers applied to it, but do not capture the results of each group match, meaning
-     * you can't access them afterwards using [MatchResult.groups].
-     *
-     * If you want to capture group results, use [startGroup] or [startNamedGroup].
-     *
-     * Note: all groups must be ended with [endGroup] before calling [buildRegex].
-     *
-     * @return The current [RegexBuilder] object, for method chaining
-     */
-    @Deprecated("The old syntax will be removed in version 3.0: please use nonCapturingGroup")
-    fun startNonCapturingGroup(): RegexBuilder {
-        openGroupCount++
-        return addPart("startNonCapturingGroup()", "(?:")
-    }
-
-    /**
-     * Start a named capture group. Capture groups have two purposes: they group part of the expression so
-     * it can have quantifiers applied to it, and they capture the results of each group match and
-     * allow you to access them afterwards using [MatchResult.groups]. Named capture groups can be accessed by
-     * indexing into [MatchResult.groups] with the assigned name as well as a numerical index.
-     *
-     * If you don't want to capture the group match, use [startNonCapturingGroup].
-     *
-     * Note: all groups must be ended with [endGroup] before calling [buildRegex].
-     *
-     * @param name Name used to identify the group
-     * @return The current [RegexBuilder] object, for method chaining
-     */
-    @Deprecated("The old syntax will be removed in version 3.0: please use namedGroup")
-    fun startNamedGroup(name: String): RegexBuilder {
-        openGroupCount++
-        return addPart("startNamedGroup(\"$name\")", "(?<$name>")
-    }
-
-    /**
-     * End the innermost group previously started with [startGroup], [startNonCapturingGroup] or
-     * [startNamedGroup].
+     * If you don't want to capture the group match, use [nonCapturingGroup].
      *
      * @param quantifier Quantifier to apply to this group
      * @return The current [RegexBuilder] object, for method chaining
-     * @throws RegexBuilderException A group has not been started
      */
-    @Throws(RegexBuilderException::class)
-    @Deprecated("The old syntax will be removed in version 3.0: please use new group syntax")
-    fun endGroup(quantifier: RegexQuantifier? = null): RegexBuilder {
-        if (openGroupCount == 0) {
-            throw RegexBuilderException(
-                "Cannot call endGroup() until a group has been started with startGroup()",
-                stringBuilder
-            )
-        }
-
-        openGroupCount--
-        return addPart("endGroup(${nameOf(quantifier)})", ")", quantifier)
-    }
-
-    // GROUPS (DSL)
-
     fun group(quantifier: RegexQuantifier? = null, buildSteps: RegexBuilder.() -> Unit) =
         startGroup().apply(buildSteps).endGroup(quantifier)
 
+    /**
+     * Create a named capture group. Capture groups have two purposes: they group part of the expression so it can have
+     * quantifiers applied to it, and they capture the results of each group match and allow you to access them
+     * afterwards using [MatchResult.groups]. Named capture groups can be accessed by indexing into [MatchResult.groups]
+     * with the assigned name or a numerical index.
+     *
+     * If you don't want to capture the group match, use [nonCapturingGroup].
+     *
+     * @param name Name used to identify the group
+     * @param quantifier Quantifier to apply to this group
+     * @return The current [RegexBuilder] object, for method chaining
+     */
     fun namedGroup(name: String, quantifier: RegexQuantifier? = null, buildSteps: RegexBuilder.() -> Unit) =
         startNamedGroup(name).apply(buildSteps).endGroup(quantifier)
 
+    /**
+     * Create a non-capturing group. Non-capturing groups group part of the expression so it can have quantifiers
+     * applied to it, but do not capture the results of each group match, meaning you can't access them afterwards using
+     * [MatchResult.groups].
+     *
+     * If you want to capture group results, use [group] or [namedGroup].
+     *
+     * @param quantifier Quantifier to apply to this group
+     * @return The current [RegexBuilder] object, for method chaining
+     */
     fun nonCapturingGroup(quantifier: RegexQuantifier? = null, buildSteps: RegexBuilder.() -> Unit) =
         startNonCapturingGroup().apply(buildSteps).endGroup(quantifier)
 
+    // INTERNAL METHODS
+
+    internal fun buildRegex(vararg options: RegexOptions): Regex {
+        val stringBuilt = stringBuilder.toString()
+        val regex = Regex(
+            stringBuilt,
+            options.map { it.kotlinRegexOption }.toSet()
+        )
+        stringBuilder.setLength(0)
+        return regex
+    }
+
+    internal fun buildPattern(vararg options: RegexOptions): Pattern = buildRegex(*options).toPattern()
+
     // PRIVATE METHODS
 
-    private fun addPart(method: String, part: String, quantifier: RegexQuantifier? = null): RegexBuilder {
-        val quantifierString = quantifier?.toString() ?: ""
-        log(method, "$part$quantifierString")
+    private fun startGroup(): RegexBuilder = addPart("(")
+
+    private fun startNonCapturingGroup(): RegexBuilder = addPart("(?:")
+
+    private fun startNamedGroup(name: String): RegexBuilder = addPart("(?<$name>")
+
+    private fun endGroup(quantifier: RegexQuantifier? = null): RegexBuilder = addPart(")", quantifier)
+
+    private fun addPart(part: String, quantifier: RegexQuantifier? = null): RegexBuilder {
         stringBuilder
             .append(part)
             .append(quantifier?.toString() ?: "")
         return this
     }
 
-    private fun addPartInNonCapturingGroup(
-        method: String,
-        part: String,
-        quantifier: RegexQuantifier? = null): RegexBuilder = addPart(method, "(?:$part)", quantifier)
-
-    private fun log(method: String, message: String) {
-        logFunction("$prefix: $method: $message")
-    }
+    private fun addPartInNonCapturingGroup(part: String, quantifier: RegexQuantifier? = null): RegexBuilder =
+        addPart("(?:$part)", quantifier)
 
     private fun makeSafeForCharacterClass(text: String): String {
         var safeText = text
@@ -602,11 +455,5 @@ class RegexBuilder @Deprecated("The old syntax will be removed in version 3.0: p
             .replace("{", "\\{")
             .replace("}", "\\}")
             .replace("|", "\\|")
-    }
-
-    private fun nameOf(quantifier: RegexQuantifier?) = quantifier?.name ?: ""
-
-    companion object {
-        private const val DEFAULT_PREFIX = "RegexBuilder"
     }
 }
