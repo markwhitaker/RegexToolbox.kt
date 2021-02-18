@@ -15,7 +15,7 @@ import java.util.regex.Pattern
  * }
  * </pre>
  */
-class RegexBuilder {
+class RegexBuilder @Deprecated("The old syntax will be removed in version 3.0: please use the new syntax") constructor() {
     private val stringBuilder = StringBuilder()
     private var openGroupCount = 0
     private var logFunction: (s: String) -> Unit = {}
@@ -24,10 +24,12 @@ class RegexBuilder {
     /**
      * Interface to a logger attached by the client code which will receive log messages as the regex is built.
      */
+    @Deprecated("Logging will be removed in version 3.0")
     interface Logger {
         /**
          * Log a [message] to a debugger or logging framework
          */
+        @Deprecated("Logging will be removed in version 3.0")
         fun log(message: String)
     }
 
@@ -40,6 +42,7 @@ class RegexBuilder {
      * @throws RegexBuilderException An error occurred when building the regex
      */
     @Throws(RegexBuilderException::class)
+    @Deprecated("The old syntax will be removed in version 3.0: please use regex")
     fun buildRegex(vararg options: RegexOptions): Regex =
         when (openGroupCount) {
             0 -> {
@@ -70,12 +73,14 @@ class RegexBuilder {
      * @throws RegexBuilderException An error occurred when building the regex
      */
     @Throws(RegexBuilderException::class)
+    @Deprecated("The old syntax will be removed in version 3.0: please use pattern")
     fun buildPattern(vararg options: RegexOptions): Pattern = buildRegex(*options).toPattern()
 
     /**
      * Attach a [logger] to this builder using this [Logger] interface. The builder will emit logging messages to it as
      * the regex is built with the prefix "RegexBuilder".
      */
+    @Deprecated("Logging will be removed in version 3.0")
     fun addLogger(logger: Logger): RegexBuilder {
         return addLogger{
             logger.log(it)
@@ -86,6 +91,7 @@ class RegexBuilder {
      * Attach a [logger] to this builder using this [Logger] interface. The builder will emit logging messages to it as
      * the regex is built with the provided [prefix].
      */
+    @Deprecated("Logging will be removed in version 3.0")
     fun addLogger(prefix: String, logger: Logger): RegexBuilder {
         return addLogger(prefix) {
             logger.log(it)
@@ -96,6 +102,7 @@ class RegexBuilder {
      * Attach a logger to this builder using the provided log function. The builder will emit logging messages to it
      * as the regex is built with the prefix "RegexBuilder".
      */
+    @Deprecated("Logging will be removed in version 3.0")
     fun addLogger(logFunction: (s: String) -> Unit): RegexBuilder {
         this.logFunction = logFunction
         return this
@@ -105,6 +112,7 @@ class RegexBuilder {
      * Attach a logger to this builder using the provided log function. The builder will emit logging messages to it
      * as the regex is built with the provided [prefix].
      */
+    @Deprecated("Logging will be removed in version 3.0")
     fun addLogger(prefix: String, logFunction: (s: String) -> Unit): RegexBuilder {
         this.logFunction = logFunction
         this.prefix = prefix
@@ -467,6 +475,7 @@ class RegexBuilder {
      *
      * @return The current [RegexBuilder] object, for method chaining
      */
+    @Deprecated("The old syntax will be removed in version 3.0: please use group")
     fun startGroup(): RegexBuilder {
         openGroupCount++
         return addPart("startGroup()", "(")
@@ -483,6 +492,7 @@ class RegexBuilder {
      *
      * @return The current [RegexBuilder] object, for method chaining
      */
+    @Deprecated("The old syntax will be removed in version 3.0: please use nonCapturingGroup")
     fun startNonCapturingGroup(): RegexBuilder {
         openGroupCount++
         return addPart("startNonCapturingGroup()", "(?:")
@@ -501,6 +511,7 @@ class RegexBuilder {
      * @param name Name used to identify the group
      * @return The current [RegexBuilder] object, for method chaining
      */
+    @Deprecated("The old syntax will be removed in version 3.0: please use namedGroup")
     fun startNamedGroup(name: String): RegexBuilder {
         openGroupCount++
         return addPart("startNamedGroup(\"$name\")", "(?<$name>")
@@ -515,6 +526,7 @@ class RegexBuilder {
      * @throws RegexBuilderException A group has not been started
      */
     @Throws(RegexBuilderException::class)
+    @Deprecated("The old syntax will be removed in version 3.0: please use new group syntax")
     fun endGroup(quantifier: RegexQuantifier? = null): RegexBuilder {
         if (openGroupCount == 0) {
             throw RegexBuilderException(
