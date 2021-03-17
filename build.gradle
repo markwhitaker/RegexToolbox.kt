@@ -1,6 +1,6 @@
 buildscript {
     ext.junit_version = '4.13.2'
-    ext.mockk_version = '1.10.6'
+    ext.mockk_version = '1.11.0'
 }
 
 plugins {
