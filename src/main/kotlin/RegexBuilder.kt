@@ -438,22 +438,12 @@ class RegexBuilder internal constructor() {
         return safeText
     }
 
-    private fun makeSafeForRegex(s: String): String {
-        return s
-            // Make sure this always comes first!
-            .replace("\\", "\\\\")
-            .replace("?", "\\?")
-            .replace(".", "\\.")
-            .replace("+", "\\+")
-            .replace("*", "\\*")
-            .replace("^", "\\^")
-            .replace("$", "\\$")
-            .replace("(", "\\(")
-            .replace(")", "\\)")
-            .replace("[", "\\[")
-            .replace("]", "\\]")
-            .replace("{", "\\{")
-            .replace("}", "\\}")
-            .replace("|", "\\|")
+    private fun makeSafeForRegex(s: String): String =
+        UNSAFE_CHARACTERS.fold(s) { safe, unsafe ->
+            safe.replace(unsafe, "\\$unsafe")
+        }
+
+    private companion object {
+        private val UNSAFE_CHARACTERS = listOf("\\", "?", ".", "+", "*", "^", "$", "(", ")", "[", "]", "{", "}", "|")
     }
 }
