@@ -33,14 +33,12 @@ class RegexBuilder internal constructor() {
      * @param quantifier Quantifier to apply to this element
      * @return The current [RegexBuilder] object, for method chaining
      */
-    fun text(text: String, quantifier: RegexQuantifier? = null): RegexBuilder {
-        val safeText = makeSafeForRegex(text)
-        return if (quantifier == null) {
-            addPart(safeText)
+    fun text(text: String, quantifier: RegexQuantifier? = null): RegexBuilder =
+        if (quantifier == null) {
+            addPart(makeSafeForRegex(text))
         } else {
-            addPartInNonCapturingGroup(safeText, quantifier)
+            addPartInNonCapturingGroup(makeSafeForRegex(text), quantifier)
         }
-    }
 
     /**
      * Add literal regex text to the regex. Regex special characters will NOT be escaped.
@@ -295,8 +293,8 @@ class RegexBuilder internal constructor() {
      * @param quantifier Quantifier to apply to this element
      * @return The current [RegexBuilder] object, for method chaining
      */
-    fun anyOf(strings: List<String>, quantifier: RegexQuantifier? = null): RegexBuilder {
-        return when {
+    fun anyOf(strings: List<String>, quantifier: RegexQuantifier? = null): RegexBuilder =
+        when {
             strings.isEmpty() -> {
                 this
             }
@@ -310,7 +308,6 @@ class RegexBuilder internal constructor() {
                 addPartInNonCapturingGroup(stringsSafeAndJoined, quantifier)
             }
         }
-    }
 
     /**
      * Add a group of alternatives, to match any of the strings provided
@@ -413,12 +410,12 @@ class RegexBuilder internal constructor() {
 
     private fun endGroup(quantifier: RegexQuantifier? = null): RegexBuilder = addPart(")", quantifier)
 
-    private fun addPart(part: String, quantifier: RegexQuantifier? = null): RegexBuilder {
-        stringBuilder
-            .append(part)
-            .append(quantifier?.toString() ?: "")
-        return this
-    }
+    private fun addPart(part: String, quantifier: RegexQuantifier? = null): RegexBuilder =
+        apply {
+            stringBuilder
+                .append(part)
+                .append(quantifier?.toString() ?: "")
+        }
 
     private fun addPartInNonCapturingGroup(part: String, quantifier: RegexQuantifier? = null): RegexBuilder =
         addPart("(?:$part)", quantifier)
