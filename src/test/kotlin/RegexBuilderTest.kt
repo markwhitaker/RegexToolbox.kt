@@ -67,6 +67,15 @@ class RegexBuilderTest {
     }
 
     @Test
+    fun testEscapeCharacters() {
+        val regex = regex {
+            text("\\?.+*^\$()[]{}|")
+        }
+
+        assertEquals("\\\\\\?\\.\\+\\*\\^\\\$\\(\\)\\[\\]\\{\\}\\|", regex.toString())
+    }
+
+    @Test
     fun testText() {
         val regex = regex {
             text("a*b")
