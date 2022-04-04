@@ -4,7 +4,7 @@ buildscript {
 
 plugins {
     id 'java-library'
-    id 'org.jetbrains.kotlin.jvm' version '1.6.10'
+    id 'org.jetbrains.kotlin.jvm' version '1.6.20'
     id 'com.palantir.git-version' version '0.14.0'
 }
 
