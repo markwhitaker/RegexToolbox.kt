@@ -15,16 +15,14 @@ repositories {
 group 'uk.co.mainwave.regextoolbox'
 version gitVersion()
 
-sourceCompatibility = 1.8
-
 dependencies {
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
     testImplementation "junit:junit:$junit_version"
 }
 
 compileKotlin {
-    kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8
 }
 compileTestKotlin {
-    kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8
 }
