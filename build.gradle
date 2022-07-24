@@ -4,7 +4,7 @@ buildscript {
 
 plugins {
     id 'java-library'
-    id 'org.jetbrains.kotlin.jvm' version '1.7.0'
+    id 'org.jetbrains.kotlin.jvm' version '1.7.10'
     id 'com.palantir.git-version' version '0.15.0'
 }
 
@@ -15,16 +15,14 @@ repositories {
 group 'uk.co.mainwave.regextoolbox'
 version gitVersion()
 
-sourceCompatibility = 1.8
-
 dependencies {
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
     testImplementation "junit:junit:$junit_version"
 }
 
 compileKotlin {
-    kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8
 }
 compileTestKotlin {
-    kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8
 }
