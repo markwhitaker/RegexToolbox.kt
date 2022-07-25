@@ -55,12 +55,19 @@ repositories {
 implementation 'com.github.markwhitaker:RegexToolbox.kt:x.y.z'
 ```
 
----
-![icon](https://raw.githubusercontent.com/markwhitaker/RegexToolbox.Java/master/artwork/RegexToolbox-icon-32.png) **Java developer?** Check out the Java version of this library, [RegexToolbox.Java](https://github.com/markwhitaker/RegexToolbox.Java).
+## Also for Kotlin developers
 
-![icon](https://raw.githubusercontent.com/markwhitaker/RegexToolbox.NET/master/Artwork/RegexToolbox-icon-32.png) **.NET developer?** Check out the C# version of this library, [RegexToolbox.NET](https://github.com/markwhitaker/RegexToolbox.NET).
+![icon](https://raw.githubusercontent.com/markwhitaker/MimeTypes.kt/main/artwork/MimeTypes-icon-32.png) [MimeTypes.kt](https://github.com/markwhitaker/MimeTypes.kt): MIME type constants for your Kotlin projects
 
-![icon](https://raw.githubusercontent.com/markwhitaker/RegexToolbox.JS/master/artwork/RegexToolbox-icon-32.png) **Web developer?** Check out the web version of this library, [RegexToolbox.JS](https://github.com/markwhitaker/RegexToolbox.JS).
+## RegexToolbox for other languages
+
+
+
+![icon](https://raw.githubusercontent.com/markwhitaker/RegexToolbox.Java/master/artwork/RegexToolbox-icon-32.png) [RegexToolbox for Java](https://github.com/markwhitaker/RegexToolbox.Java)
+
+![icon](https://raw.githubusercontent.com/markwhitaker/RegexToolbox.NET/master/Artwork/RegexToolbox-icon-32.png) [RegexToolbox for .NET](https://github.com/markwhitaker/RegexToolbox.NET)
+
+![icon](https://raw.githubusercontent.com/markwhitaker/RegexToolbox.JS/master/artwork/RegexToolbox-icon-32.png) [RegexToolbox for JavaScript](https://github.com/markwhitaker/RegexToolbox.JS)
 
 ---
 ###### **RegexToolbox:** Now you can be a [hero](https://xkcd.com/208/) without knowing regular expressions.
