@@ -29,7 +29,7 @@ All `RegexBuilder` features that were deprecated in version 2.4 have been remove
 |`startNonCapturingGroup() ... endGroup()`|`nonCapturingGroup { ... }`|
 |`addLogger()`|No replacement: logging has been removed.|
 
-In a nutshell: the old Java-style is completed removed in 3.0.
+In a nutshell: the old Java-style syntax is completed removed in 3.0.
 RegexToolbox.kt now exclusively uses the new [type-safe builder syntax](https://kotlinlang.org/docs/reference/type-safe-builders.html) introduced in 2.0, for example:
 
 ```kotlin
