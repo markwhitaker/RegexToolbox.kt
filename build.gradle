@@ -5,7 +5,6 @@ buildscript {
 plugins {
     id 'java-library'
     id 'org.jetbrains.kotlin.jvm' version '1.7.10'
-    id 'com.palantir.git-version' version '0.15.0'
 }
 
 repositories {
@@ -13,7 +12,7 @@ repositories {
 }
 
 group 'uk.co.mainwave.regextoolbox'
-version gitVersion()
+version getVersionFromGit()
 
 dependencies {
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
@@ -25,4 +24,17 @@ compileKotlin {
 }
 compileTestKotlin {
     kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8
+}
+
+def getVersionFromGit() {
+    try {
+        def stdout = new ByteArrayOutputStream()
+        exec {
+            commandLine "git", "describe", "--tags", "--always"
+            standardOutput = stdout
+        }
+        return stdout.toString().trim()
+    } catch (ignored) {
+        return "1.0.0"
+    }
 }

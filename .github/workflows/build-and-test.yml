@@ -1,0 +1,11 @@
+name: Build and test
+on:
+  push:
+    branches: [main]
+  pull_request:
+    types: [opened, reopened, synchronize]
+
+jobs:
+  build-and-test:
+    name: Build and test
+    uses: markwhitaker/shared-workflows/.github/workflows/gradle-build-and-test.yml@main
