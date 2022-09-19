@@ -1,5 +1,5 @@
 ![icon](artwork/RegexToolbox-icon-100.png)
-# RegexToolbox.kt [![CircleCI](https://circleci.com/gh/markwhitaker/RegexToolbox.kt.svg?style=shield)](https://circleci.com/gh/markwhitaker/RegexToolbox.kt) [![Download from JitPack](https://jitpack.io/v/markwhitaker/RegexToolbox.kt.svg)](https://jitpack.io/#markwhitaker/RegexToolbox.kt)
+# RegexToolbox.kt [![Build and test](https://github.com/markwhitaker/RegexToolbox.kt/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/markwhitaker/RegexToolbox.kt/actions/workflows/build-and-test.yml) [![Download from JitPack](https://jitpack.io/v/markwhitaker/RegexToolbox.kt.svg)](https://jitpack.io/#markwhitaker/RegexToolbox.kt)
 
 
 Regular expression tools for Kotlin developers.
