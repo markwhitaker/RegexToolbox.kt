@@ -19,11 +19,8 @@ dependencies {
     testImplementation "junit:junit:$junit_version"
 }
 
-compileKotlin {
-    kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8
-}
-compileTestKotlin {
-    kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8
+kotlin {
+    jvmToolchain(8)
 }
 
 def getVersionFromGit() {
