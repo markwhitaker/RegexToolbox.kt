@@ -4,7 +4,7 @@ buildscript {
 
 plugins {
     id 'java-library'
-    id 'org.jetbrains.kotlin.jvm' version '1.9.0'
+    id 'org.jetbrains.kotlin.jvm' version '1.9.10'
 }
 
 repositories {
