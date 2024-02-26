@@ -1,5 +1,6 @@
 package uk.co.mainwave.regextoolboxkotlin
 
+import org.intellij.lang.annotations.Language
 import java.util.regex.Pattern
 
 /**
@@ -56,7 +57,7 @@ class RegexBuilder internal constructor() {
      * @param quantifier Quantifier to apply to the whole string
      * @return The current [RegexBuilder] object, for method chaining
      */
-    fun regexText(text: String, quantifier: RegexQuantifier? = null): RegexBuilder =
+    fun regexText(@Language("RegExp") text: String, quantifier: RegexQuantifier? = null): RegexBuilder =
         if (quantifier == null) {
             addPart(text)
         } else {
@@ -123,7 +124,7 @@ class RegexBuilder internal constructor() {
      * @return The current [RegexBuilder] object, for method chaining
      */
     fun lineFeed(quantifier: RegexQuantifier? = null) =
-        addPart("\\n", quantifier)
+        addPart("""\R""", quantifier)
 
     /**
      * Add an element to match a single carriage return character.
