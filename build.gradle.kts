@@ -34,7 +34,7 @@ fun getVersionFromGit(): String {
         val output = StringBuilder()
         output.append(reader.readLine())
         process.waitFor()
-        return output.toString();
+        return output.toString()
     } catch (e: Exception) {
         return "1.0.0"
     }
