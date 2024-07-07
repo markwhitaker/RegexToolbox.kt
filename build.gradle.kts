@@ -32,7 +32,7 @@ fun getVersionFromGit(): String {
         val process = processBuilder.start()
         val reader = BufferedReader(InputStreamReader(process.inputStream))
         val output = StringBuilder()
-        output.append(reader.readLine());
+        output.append(reader.readLine())
         process.waitFor()
         return output.toString();
     } catch (e: Exception) {
