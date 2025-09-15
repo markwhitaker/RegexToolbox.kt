@@ -1,6 +1,6 @@
 plugins {
     `java-library`
-    kotlin("jvm") version "2.2.10"
+    kotlin("jvm") version "2.2.20"
 }
 
 val junitVersion = "4.13.2"
